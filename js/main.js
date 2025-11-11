@@ -4,11 +4,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 햄버거 메뉴 토글
     const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
+    const nav = document.querySelector('.nav');
 
-    if (hamburger && navMenu) {
+    if (hamburger && nav) {
         hamburger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+
+        // 메뉴 항목 클릭시 메뉴 닫기
+        const navLinks = document.querySelectorAll('.nav-menu a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                nav.classList.remove('active');
+            });
         });
     }
 
