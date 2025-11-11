@@ -195,6 +195,74 @@
             font-weight: 600;
             font-size: 14px;
         }
+        
+        .image-preview-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .preview-item {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .preview-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .preview-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        
+        .preview-item .remove-btn:hover {
+            background: rgba(220, 53, 69, 1);
+        }
+        
+        .preview-item .file-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px;
+            font-size: 10px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
 </head>
 <body>
@@ -237,6 +305,7 @@
                         Ctrl(또는 Cmd) 누른 채로 여러 파일 선택 또는 드래그로 여러 파일 선택
                     </small>
                     <div id="fileCount" style="margin-top: 10px; color: #28a745; font-weight: 600;"></div>
+                    <div id="imagePreviewContainer" class="image-preview-container" style="display: none;"></div>
                 </div>
                 
                 <div class="form-group">
@@ -355,10 +424,12 @@
                         'both': '커튼+블라인드'
                     }[portfolio.category] || portfolio.category;
                     
+                    const imageCount = portfolio.imageCount || (portfolio.images ? portfolio.images.length : 1);
+                    
                     card.innerHTML = `
                         <img src="${portfolio.imageUrl || 'https://via.placeholder.com/300x250'}" alt="${portfolio.title}">
                         <div class="portfolio-info">
-                            <div class="portfolio-title">${portfolio.title}</div>
+                            <div class="portfolio-title">${portfolio.title} ${imageCount > 1 ? `<span style="color: #28a745; font-size: 0.9em;">(📷 ${imageCount}장)</span>` : ''}</div>
                             <div class="portfolio-category">${categoryText}${portfolio.location ? ' | ' + portfolio.location : ''}</div>
                             <div class="portfolio-description">${portfolio.description || ''}</div>
                             <div class="portfolio-actions">
@@ -375,16 +446,80 @@
             }
         }
 
-        // 파일 선택 시 개수 표시
+        // 선택된 파일들을 저장할 배열
+        let selectedFiles = [];
+
+        // 파일 선택 시 미리보기 및 개수 표시
         document.getElementById('portfolioImage').addEventListener('change', function(e) {
-            const fileCount = e.target.files.length;
+            const files = Array.from(e.target.files);
+            selectedFiles = files;
+            
             const fileCountDiv = document.getElementById('fileCount');
-            if (fileCount > 0) {
-                fileCountDiv.textContent = `✅ ${fileCount}개 파일 선택됨`;
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            
+            if (files.length > 0) {
+                fileCountDiv.textContent = `✅ ${files.length}개 파일 선택됨`;
+                previewContainer.style.display = 'grid';
+                previewContainer.innerHTML = '';
+                
+                files.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const previewItem = document.createElement('div');
+                        previewItem.className = 'preview-item';
+                        previewItem.innerHTML = `
+                            <img src="${e.target.result}" alt="${file.name}">
+                            <button class="remove-btn" onclick="removePreviewImage(${index})" title="제거">×</button>
+                            <div class="file-name">${file.name}</div>
+                        `;
+                        previewContainer.appendChild(previewItem);
+                    };
+                    reader.readAsDataURL(file);
+                });
             } else {
                 fileCountDiv.textContent = '';
+                previewContainer.style.display = 'none';
+                previewContainer.innerHTML = '';
             }
         });
+
+        // 미리보기 이미지 제거
+        function removePreviewImage(index) {
+            selectedFiles.splice(index, 1);
+            
+            // DataTransfer 객체를 사용하여 파일 input 업데이트
+            const dt = new DataTransfer();
+            selectedFiles.forEach(file => dt.items.add(file));
+            document.getElementById('portfolioImage').files = dt.files;
+            
+            // 미리보기 업데이트
+            const fileCountDiv = document.getElementById('fileCount');
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            
+            if (selectedFiles.length > 0) {
+                fileCountDiv.textContent = `✅ ${selectedFiles.length}개 파일 선택됨`;
+                previewContainer.innerHTML = '';
+                
+                selectedFiles.forEach((file, idx) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const previewItem = document.createElement('div');
+                        previewItem.className = 'preview-item';
+                        previewItem.innerHTML = `
+                            <img src="${e.target.result}" alt="${file.name}">
+                            <button class="remove-btn" onclick="removePreviewImage(${idx})" title="제거">×</button>
+                            <div class="file-name">${file.name}</div>
+                        `;
+                        previewContainer.appendChild(previewItem);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            } else {
+                fileCountDiv.textContent = '';
+                previewContainer.style.display = 'none';
+                previewContainer.innerHTML = '';
+            }
+        }
 
         // 시공사례 등록/수정 (다중 파일 지원)
         document.getElementById('portfolioForm').addEventListener('submit', async function(e) {
@@ -443,7 +578,7 @@
                 return;
             }
 
-            // 신규 등록 모드 (다중 파일 업로드)
+            // 신규 등록 모드 (다중 파일을 하나의 시공사례로 업로드)
             if (imageFiles.length === 0) {
                 alert('이미지를 선택해주세요.');
                 return;
@@ -459,8 +594,7 @@
                 progressDiv.classList.add('active');
 
                 const totalFiles = imageFiles.length;
-                let successCount = 0;
-                let failCount = 0;
+                const uploadedImages = []; // 업로드된 이미지 URL 배열
 
                 for (let i = 0; i < totalFiles; i++) {
                     const file = imageFiles[i];
@@ -484,24 +618,11 @@
                         const result = await response.json();
                         
                         if (result.success) {
-                            // Firestore에 저장
-                            const portfolioData = {
-                                title: totalFiles > 1 ? `${title} #${currentNum}` : title,
-                                category: category,
-                                location: location,
-                                description: description,
-                                imageUrl: result.data.url,
-                                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                            };
-
-                            await db.collection('portfolios').add(portfolioData);
-                            successCount++;
+                            uploadedImages.push(result.data.url);
                         } else {
-                            failCount++;
                             console.error(`파일 업로드 실패: ${file.name}`);
                         }
                     } catch (error) {
-                        failCount++;
                         console.error(`파일 처리 실패: ${file.name}`, error);
                     }
 
@@ -511,21 +632,35 @@
                     progressFill.textContent = `${progress}%`;
                 }
 
-                // 완료 메시지
-                progressText.textContent = `완료! 성공: ${successCount}개, 실패: ${failCount}개`;
-                
-                setTimeout(() => {
-                    progressDiv.classList.remove('active');
-                    submitBtn.disabled = false;
+                // 업로드된 이미지가 있으면 Firestore에 하나의 시공사례로 저장
+                if (uploadedImages.length > 0) {
+                    const portfolioData = {
+                        title: title,
+                        category: category,
+                        location: location,
+                        description: description,
+                        images: uploadedImages, // 여러 이미지를 배열로 저장
+                        imageUrl: uploadedImages[0], // 첫 번째 이미지를 썸네일로
+                        imageCount: uploadedImages.length, // 이미지 개수
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+
+                    await db.collection('portfolios').add(portfolioData);
                     
-                    if (successCount > 0) {
-                        alert(`${successCount}개의 시공사례가 등록되었습니다!${failCount > 0 ? `\n(${failCount}개 실패)` : ''}`);
+                    progressText.textContent = `완료! ${uploadedImages.length}개 이미지가 포함된 시공사례 등록 완료`;
+                    
+                    setTimeout(() => {
+                        progressDiv.classList.remove('active');
+                        submitBtn.disabled = false;
+                        alert(`시공사례가 등록되었습니다!\n(이미지 ${uploadedImages.length}개)`);
                         resetForm();
                         loadPortfolios();
-                    } else {
-                        alert('모든 파일 업로드에 실패했습니다.');
-                    }
-                }, 2000);
+                    }, 2000);
+                } else {
+                    progressDiv.classList.remove('active');
+                    submitBtn.disabled = false;
+                    alert('모든 파일 업로드에 실패했습니다.');
+                }
 
             } catch (error) {
                 console.error('업로드 실패:', error);
@@ -577,6 +712,9 @@
             document.getElementById('uploadProgress').classList.remove('active');
             document.getElementById('progressFill').style.width = '0%';
             document.getElementById('progressFill').textContent = '0%';
+            document.getElementById('imagePreviewContainer').style.display = 'none';
+            document.getElementById('imagePreviewContainer').innerHTML = '';
+            selectedFiles = [];
         }
 
         // 페이지 로드 시 시공사례 목록 표시
