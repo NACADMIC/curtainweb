@@ -386,46 +386,6 @@
             document.body.style.overflow = 'hidden';
         }
         
-        // 제품 데이터 (fallback)
-        const products = {
-            'premium-linen': {
-                title: '프리미엄 린넨커튼',
-                description: '100% 자연 소재의 고급 린넨 원단으로 제작된 프리미엄 커튼입니다. 자연스러운 질감과 우아한 분위기를 연출합니다.',
-                features: ['자연스러운 주름감', '뛰어난 통기성', '고급스러운 텍스처', '친환경 천연 소재', '사계절 사용 가능'],
-                image: 'https://images.pexels.com/photos/1743227/pexels-photo-1743227.jpeg'
-            },
-            'blackout': {
-                title: '프리미엄 블랙아웃',
-                description: '99.9% 빛차단 특수원단으로 제작되어 완벽한 암막 효과를 제공합니다. 숙면과 프라이버시 보호에 최적화되어 있습니다.',
-                features: ['완벽한 빛차단 (99.9%)', '보온/단열 효과', '고급 코팅 처리', '소음 차단 효과', '에너지 절약'],
-                image: 'https://images.pexels.com/photos/1668860/pexels-photo-1668860.jpeg'
-            },
-            'sheer': {
-                title: '쉬어커튼',
-                description: '은은한 채광과 세련된 분위기를 연출하는 쉬어커튼입니다. 가볍고 부드러운 원단이 공간을 우아하게 만들어줍니다.',
-                features: ['부드러운 채광', '가벼운 착용감', '모던한 디자인', '환기가 잘됨', '다양한 색상'],
-                image: 'https://images.pexels.com/photos/1571458/pexels-photo-1571458.jpeg'
-            },
-            'hotel': {
-                title: '호텔식 커튼',
-                description: '호텔급 고급스러운 중직물 원단으로 제작된 커튼입니다. 풍성한 주름감과 고급스러운 광택이 특징입니다.',
-                features: ['풍성한 주름감', '고급스러운 광택', '견고한 내구성', '호텔급 품질', '세련된 디자인'],
-                image: 'https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg'
-            },
-            'nordic': {
-                title: '북유럽풍 커튼',
-                description: '심플하고 모던한 스칸디나비안 스타일의 커튼입니다. 미니멀한 디자인과 내추럴한 컬러가 조화롭습니다.',
-                features: ['미니멀한 디자인', '내추럴한 컬러', '실용적인 기능성', '북유럽 감성', '모던한 스타일'],
-                image: 'https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg'
-            },
-            'print': {
-                title: '프린트 커튼',
-                description: '다양한 패턴의 디자인 커튼으로 공간에 개성을 더해줍니다. 선명한 프린팅 기술로 오래도록 아름다운 패턴을 유지합니다.',
-                features: ['독특한 패턴', '선명한 프린팅', '개성있는 스타일', '다양한 디자인', '세탁 후에도 변색 없음'],
-                image: 'https://images.pexels.com/photos/1827054/pexels-photo-1827054.jpeg'
-            }
-        };
-
         // 모달 요소
         const modal = document.getElementById('productModal');
         const closeBtn = document.querySelector('.close');
