@@ -774,24 +774,24 @@ body {
     }
     
     .header h1 {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
     }
     
     .logo-text {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         white-space: nowrap;
     }
     
     .nav-menu {
         flex-direction: row;
-        gap: 12px;
+        gap: 8px;
         flex-wrap: wrap;
         justify-content: flex-end;
     }
     
     .nav-menu li a {
-        font-size: 0.9rem;
-        padding: 6px 10px;
+        font-size: 0.85rem;
+        padding: 6px 8px;
         white-space: nowrap;
     }
     
@@ -922,6 +922,34 @@ body {
         font-size: 22px;
     }
     
+    /* 찾아오시는 길 페이지 */
+    .location-container {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+    
+    .info-section {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .info-section h3 {
+        font-size: 1.3rem;
+    }
+    
+    .map-container {
+        height: 350px;
+        margin-bottom: 20px;
+    }
+    
+    .directions {
+        padding: 20px;
+    }
+    
+    .directions h3 {
+        font-size: 1.3rem;
+    }
+    
     /* 페이지 콘텐츠 */
     .page-content {
         padding-top: 100px;
@@ -941,20 +969,20 @@ body {
     
     /* 헤더 */
     .header h1 {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
     
     .logo-text {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
     
     .nav-menu {
-        gap: 8px;
+        gap: 5px;
     }
     
     .nav-menu li a {
-        font-size: 0.8rem;
-        padding: 5px 8px;
+        font-size: 0.75rem;
+        padding: 5px 6px;
     }
     
     /* 메인 비주얼 */
@@ -1023,17 +1051,35 @@ body {
         min-height: 44px;
         padding: 12px 20px;
     }
+    
+    /* 개인정보 동의 박스 */
+    .form-group div[style*="padding: 20px"] {
+        padding: 15px !important;
+    }
+    
+    .form-group div[style*="padding: 15px"] div {
+        font-size: 0.85rem !important;
+        padding: 12px !important;
+    }
 }
 
 /* 모바일 - 극소형 (360px 이하) */
 @media (max-width: 360px) {
     .header h1 {
-        font-size: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .logo-text {
+        font-size: 0.9rem;
+    }
+    
+    .nav-menu {
+        gap: 4px;
     }
     
     .nav-menu li a {
-        font-size: 0.75rem;
-        padding: 4px 6px;
+        font-size: 0.7rem;
+        padding: 4px 5px;
     }
     
     .main-text h2 {
@@ -1051,6 +1097,44 @@ body {
     
     .product-slider .product-card img {
         height: 120px;
+    }
+    
+    /* 찾아오시는 길 페이지 */
+    .location-container {
+        padding: 0 10px !important;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+    
+    .info-item {
+        padding: 10px !important;
+    }
+    
+    .info-item .icon {
+        font-size: 1.2rem !important;
+    }
+    
+    .info-item .text h4 {
+        font-size: 0.9rem !important;
+    }
+    
+    .info-item .text p {
+        font-size: 0.85rem !important;
+    }
+    
+    .map-container {
+        height: 300px !important;
+    }
+    
+    .direction-item h4 {
+        font-size: 1rem !important;
+    }
+    
+    .direction-item p {
+        font-size: 0.85rem !important;
     }
 }
 
