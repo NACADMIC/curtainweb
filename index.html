@@ -240,21 +240,22 @@
         async function loadMainImage() {
             console.log('=== 메인 이미지 로딩 시작 ===');
             try {
-                const snapshot = await db.collection('main-images').orderBy('createdAt', 'desc').limit(1).get();
+                const snapshot = await db.collection('main-images').limit(1).get();
                 console.log('메인 이미지 스냅샷:', snapshot.size, '개');
                 
                 if (!snapshot.empty) {
                     const image = snapshot.docs[0].data();
                     console.log('메인 이미지 데이터:', image);
                     
-                    const img = document.querySelector('#mainVisual img');
+                    const img = document.querySelector('.main-visual img');
                     console.log('이미지 엘리먼트:', img);
                     
                     if (img && image.imageUrl) {
                         img.src = image.imageUrl;
+                        img.alt = image.title || '메인 이미지';
                         console.log('✅ 메인 이미지 변경 완료:', image.imageUrl);
                     } else {
-                        console.log('❌ 이미지 엘리먼트 또는 URL 없음');
+                        console.log('❌ 이미지 엘리먼트:', img, 'URL:', image ? image.imageUrl : 'no image');
                     }
                 } else {
                     console.log('❌ 등록된 메인 이미지 없음');
