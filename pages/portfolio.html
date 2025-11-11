@@ -458,14 +458,27 @@
         window.addEventListener('DOMContentLoaded', loadPortfolios);
 
         // 갤러리 네비게이션 버튼
-        prevBtn.onclick = prevImage;
-        nextBtn.onclick = nextImage;
+        prevBtn.onclick = function(e) {
+            e.stopPropagation();
+            prevImage();
+        };
+        
+        nextBtn.onclick = function(e) {
+            e.stopPropagation();
+            nextImage();
+        };
 
         // 모달 닫기
-        closeBtn.onclick = function() {
+        closeBtn.onclick = function(e) {
+            e.stopPropagation();
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
         }
+
+        // 이미지 클릭 시 모달 닫히지 않도록
+        modalImg.onclick = function(e) {
+            e.stopPropagation();
+        };
 
         // 모달 배경 클릭 시 닫기
         modal.onclick = function(event) {
