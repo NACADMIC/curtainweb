@@ -240,7 +240,6 @@
         async function loadMainImage() {
             console.log('=== 메인 이미지 로딩 시작 ===');
             const img = document.getElementById('mainImage');
-            const defaultImage = 'https://images.pexels.com/photos/1082355/pexels-photo-1082355.jpeg';
             
             try {
                 const snapshot = await db.collection('main-images').get();
@@ -254,17 +253,18 @@
                         console.log('✅ Firebase 이미지로 변경:', image.imageUrl);
                         img.src = image.imageUrl;
                         img.alt = image.title || '메인 이미지';
+                        img.style.display = 'block';
                     } else {
-                        console.log('⚠️ imageUrl 없음, 기본 이미지 사용');
-                        img.src = defaultImage;
+                        console.log('⚠️ imageUrl 없음');
+                        img.style.display = 'none';
                     }
                 } else {
-                    console.log('⚠️ Firebase에 메인 이미지 없음, 기본 이미지 사용');
-                    img.src = defaultImage;
+                    console.log('⚠️ Firebase에 메인 이미지 없음 - 메인 이미지 관리에서 등록하세요');
+                    img.style.display = 'none';
                 }
             } catch (error) {
-                console.error('❌ 메인 이미지 로드 실패, 기본 이미지 사용:', error.message);
-                if (img) img.src = defaultImage;
+                console.error('❌ 메인 이미지 로드 실패:', error.message);
+                if (img) img.style.display = 'none';
             }
         }
 
