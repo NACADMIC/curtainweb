@@ -124,8 +124,12 @@
         <section id="products" class="products">
             <div class="container">
                 <h3 class="section-title">인기 제품</h3>
-                <div class="product-grid" id="productGrid">
-                    <p style="text-align: center; color: #999;">제품을 불러오는 중...</p>
+                <div class="product-slider-wrapper">
+                    <button class="slider-btn prev" onclick="moveSlide(-1)">❮</button>
+                    <div class="product-slider" id="productGrid">
+                        <p style="text-align: center; color: #999;">제품을 불러오는 중...</p>
+                    </div>
+                    <button class="slider-btn next" onclick="moveSlide(1)">❯</button>
                 </div>
             </div>
         </section>
@@ -322,6 +326,52 @@
             productGrid.appendChild(card);
         }
 
+        // 슬라이더 이동 함수
+        let currentSlidePosition = 0;
+        function moveSlide(direction) {
+            const slider = document.getElementById('productGrid');
+            const cardWidth = 330; // 카드 너비 + gap
+            currentSlidePosition += direction * cardWidth;
+            
+            const maxScroll = slider.scrollWidth - slider.clientWidth;
+            if (currentSlidePosition < 0) {
+                currentSlidePosition = 0;
+            } else if (currentSlidePosition > maxScroll) {
+                currentSlidePosition = maxScroll;
+            }
+            
+            slider.scrollTo({
+                left: currentSlidePosition,
+                behavior: 'smooth'
+            });
+        }
+
+        // 자동 슬라이드 (5초마다)
+        let autoSlideInterval;
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                const slider = document.getElementById('productGrid');
+                const maxScroll = slider.scrollWidth - slider.clientWidth;
+                
+                if (currentSlidePosition >= maxScroll) {
+                    currentSlidePosition = 0;
+                } else {
+                    currentSlidePosition += 330;
+                }
+                
+                slider.scrollTo({
+                    left: currentSlidePosition,
+                    behavior: 'smooth'
+                });
+            }, 5000);
+        }
+
+        function stopAutoSlide() {
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+            }
+        }
+
         // 텍스트 로드
         async function loadTexts() {
             try {
@@ -344,13 +394,23 @@
         window.addEventListener('DOMContentLoaded', function() {
             console.log('=== 페이지 로드 완료 ===');
             loadMainImage();
-            loadProducts();
+            loadProducts().then(() => {
+                // 제품 로드 완료 후 자동 슬라이드 시작
+                setTimeout(startAutoSlide, 1000);
+            });
             loadTexts();
 
             // 상담 폼 이벤트 리스너
             const contactForm = document.getElementById('contactForm');
             if (contactForm) {
                 contactForm.addEventListener('submit', handleContactSubmit);
+            }
+
+            // 슬라이더에 마우스 올리면 자동 슬라이드 정지
+            const productSlider = document.getElementById('productGrid');
+            if (productSlider) {
+                productSlider.addEventListener('mouseenter', stopAutoSlide);
+                productSlider.addEventListener('mouseleave', startAutoSlide);
             }
         });
 
