@@ -112,7 +112,7 @@
     <main>
         <section class="main-visual">
             <div class="main-visual" id="mainVisual">
-                <img src="https://images.pexels.com/photos/1082355/pexels-photo-1082355.jpeg" alt="메인 비주얼">
+                <img id="mainImage" src="https://images.pexels.com/photos/1082355/pexels-photo-1082355.jpeg" alt="메인 비주얼">
                 <div class="main-text">
                     <h2 id="mainTitle">프리미엄 커튼으로 특별한 공간을 만듭니다</h2>
                     <p id="mainDescription">고객님의 간에 어울리는 맞형 디자인을 제안해드립니다</p>
@@ -240,28 +240,32 @@
         async function loadMainImage() {
             console.log('=== 메인 이미지 로딩 시작 ===');
             try {
-                const snapshot = await db.collection('main-images').limit(1).get();
+                const snapshot = await db.collection('main-images').get();
                 console.log('메인 이미지 스냅샷:', snapshot.size, '개');
                 
                 if (!snapshot.empty) {
                     const image = snapshot.docs[0].data();
                     console.log('메인 이미지 데이터:', image);
                     
-                    const img = document.querySelector('.main-visual img');
+                    const img = document.getElementById('mainImage');
                     console.log('이미지 엘리먼트:', img);
                     
                     if (img && image.imageUrl) {
+                        console.log('이미지 URL 변경 시도:', image.imageUrl);
                         img.src = image.imageUrl;
                         img.alt = image.title || '메인 이미지';
-                        console.log('✅ 메인 이미지 변경 완료:', image.imageUrl);
+                        console.log('✅ 메인 이미지 변경 완료!');
+                        console.log('현재 이미지 src:', img.src);
                     } else {
-                        console.log('❌ 이미지 엘리먼트:', img, 'URL:', image ? image.imageUrl : 'no image');
+                        console.log('❌ 실패 - img:', img, 'imageUrl:', image ? image.imageUrl : 'undefined');
                     }
                 } else {
-                    console.log('❌ 등록된 메인 이미지 없음');
+                    console.log('⚠️ Firebase에 등록된 메인 이미지가 없습니다.');
+                    console.log('관리자 페이지에서 메인 이미지를 등록해주세요: /admin/main-images.html');
                 }
             } catch (error) {
                 console.error('❌ 메인 이미지 로드 실패:', error);
+                console.error('에러 상세:', error.message);
             }
         }
 
