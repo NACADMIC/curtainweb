@@ -95,18 +95,17 @@
     </div>
 
     <script>
-        const auth = firebase.auth();
-
-        document.getElementById('adminLoginForm').addEventListener('submit', async function(e) {
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const id = document.getElementById('adminId').value;
             const pw = document.getElementById('adminPw').value;
             
-            try {
-                await auth.signInWithEmailAndPassword(id, pw);
+            // 기본 관리자 계정
+            if(id === 'admin' && pw === '1234') {
+                localStorage.setItem('adminLoggedIn', 'true');
                 window.location.href = 'dashboard.html';
-            } catch (error) {
-                alert('로그인 실패: ' + error.message);
+            } else {
+                alert('아이디 또는 비밀번호가 잘못되었습니다.');
             }
         });
     </script>
