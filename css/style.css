@@ -684,7 +684,7 @@ body {
 /* 플로팅 상담 버튼 */
 .floating-buttons {
     position: fixed;
-    right: 20px;
+    left: 20px;
     bottom: 20px;
     display: flex;
     flex-direction: column;
@@ -911,7 +911,7 @@ body {
     
     /* 플로팅 버튼 */
     .floating-buttons {
-        right: 15px;
+        left: 15px;
         bottom: 15px;
         gap: 10px;
     }
