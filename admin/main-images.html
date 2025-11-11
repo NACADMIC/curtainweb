@@ -61,59 +61,98 @@
         const IMGBB_API_KEY = 'fec26b54c7d067f90e5896935c9f4205';
 
         async function loadImages() {
-            const snapshot = await db.collection('main-images').get();
+            console.log('이미지 목록 로딩 시작...');
             const list = document.getElementById('imageList');
-            list.innerHTML = '';
+            list.innerHTML = '<p>로딩 중...</p>';
             
-            if (snapshot.empty) {
-                list.innerHTML = '<p>등록된 이미지가 없습니다.</p>';
-                return;
+            try {
+                const snapshot = await db.collection('main-images').get();
+                console.log('이미지 수:', snapshot.size);
+                list.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    list.innerHTML = '<p>등록된 이미지가 없습니다.</p>';
+                    console.log('등록된 이미지 없음');
+                    return;
+                }
+                
+                snapshot.forEach(doc => {
+                    const item = doc.data();
+                    console.log('이미지:', item);
+                    const div = document.createElement('div');
+                    div.className = 'image-item';
+                    div.innerHTML = `
+                        <img src="${item.imageUrl}" alt="${item.title}">
+                        <h3>${item.title}</h3>
+                        <button onclick="deleteImage('${doc.id}')">삭제</button>
+                    `;
+                    list.appendChild(div);
+                });
+                console.log('✅ 이미지 목록 로딩 완료');
+            } catch (error) {
+                console.error('❌ 이미지 로딩 실패:', error);
+                list.innerHTML = `<p style="color: red;">오류: ${error.message}</p>`;
             }
-            
-            snapshot.forEach(doc => {
-                const item = doc.data();
-                const div = document.createElement('div');
-                div.className = 'image-item';
-                div.innerHTML = `
-                    <img src="${item.imageUrl}" alt="${item.title}">
-                    <h3>${item.title}</h3>
-                    <button onclick="deleteImage('${doc.id}')">삭제</button>
-                `;
-                list.appendChild(div);
-            });
         }
 
         document.getElementById('imageForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            console.log('=== 이미지 등록 시작 ===');
+            
             const formData = new FormData(e.target);
             const imageFile = formData.get('image');
             
-            const imgData = new FormData();
-            imgData.append('image', imageFile);
-            const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-                method: 'POST',
-                body: imgData
-            });
-            const result = await response.json();
+            if (!imageFile || imageFile.size === 0) {
+                alert('이미지를 선택해주세요.');
+                return;
+            }
             
-            if (result.success) {
-                await db.collection('main-images').add({
-                    title: formData.get('title'),
-                    imageUrl: result.data.url,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+            try {
+                console.log('이미지 업로드 중...');
+                const imgData = new FormData();
+                imgData.append('image', imageFile);
                 
-                alert('이미지가 등록되었습니다.');
-                closeModal();
-                loadImages();
+                const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                    method: 'POST',
+                    body: imgData
+                });
+                const result = await response.json();
+                console.log('imgBB 응답:', result);
+                
+                if (result.success) {
+                    console.log('Firestore 저장 중...');
+                    await db.collection('main-images').add({
+                        title: formData.get('title'),
+                        imageUrl: result.data.url,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    console.log('✅ 이미지 등록 완료!');
+                    alert('이미지가 등록되었습니다.');
+                    closeModal();
+                    loadImages();
+                } else {
+                    throw new Error('이미지 업로드 실패: ' + JSON.stringify(result));
+                }
+            } catch (error) {
+                console.error('❌ 오류 발생:', error);
+                alert('이미지 등록 실패: ' + error.message);
             }
         });
 
         async function deleteImage(id) {
             if (!confirm('삭제하시겠습니까?')) return;
-            await db.collection('main-images').doc(id).delete();
-            alert('삭제되었습니다.');
-            loadImages();
+            
+            try {
+                console.log('이미지 삭제 중:', id);
+                await db.collection('main-images').doc(id).delete();
+                console.log('✅ 삭제 완료');
+                alert('삭제되었습니다.');
+                loadImages();
+            } catch (error) {
+                console.error('❌ 삭제 실패:', error);
+                alert('삭제 실패: ' + error.message);
+            }
         }
 
         function openModal() {
