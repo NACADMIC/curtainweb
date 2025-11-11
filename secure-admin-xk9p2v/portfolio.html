@@ -362,7 +362,7 @@
         const IMGBB_API_KEY = 'fec26b54c7d067f90e5896935c9f4205';
 
         // 이미지 리사이즈 함수
-        function resizeImage(file, maxWidth = 1200, maxHeight = 800) {
+        function resizeImage(file, maxWidth = 1000, maxHeight = 750) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
@@ -391,7 +391,7 @@
 
                         canvas.toBlob((blob) => {
                             resolve(blob);
-                        }, 'image/jpeg', 0.8);
+                        }, 'image/jpeg', 0.7);
                     };
                     img.onerror = reject;
                     img.src = e.target.result;
