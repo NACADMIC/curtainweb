@@ -393,6 +393,18 @@ body {
 }
 
 /* 상담 폼 스타일 */
+/* 상담신청 섹션 */
+.contact {
+    text-align: center;
+    padding: 60px 0;
+}
+
+.contact h3 {
+    margin-bottom: 40px;
+    font-size: 2rem;
+    color: #333;
+}
+
 .contact-form {
     display: flex;
     flex-direction: column;
