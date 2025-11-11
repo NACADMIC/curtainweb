@@ -1,0 +1,58 @@
+<div class="product-detail">
+    <div class="product-images">
+        <!-- 메인 이미지 -->
+        <div class="main-image">
+            <img src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg" alt="커튼 상세 이미지">
+        </div>
+        <!-- 추가 이미지들 -->
+        <div class="thumbnail-images">
+            <img src="https://images.pexels.com/photos/1743227/pexels-photo-1743227.jpeg" alt="커튼 상세 1" onclick="changeMainImage(this.src)">
+            <img src="https://images.pexels.com/photos/1668860/pexels-photo-1668860.jpeg" alt="커튼 상세 2" onclick="changeMainImage(this.src)">
+            <img src="https://images.pexels.com/photos/1571458/pexels-photo-1571458.jpeg" alt="커튼 상세 3" onclick="changeMainImage(this.src)">
+        </div>
+    </div>
+    <!-- 상세 정보 -->
+    <div class="product-info">
+        <h2>프리미엄 린넨커튼</h2>
+        <p class="description">100% 자연 소재의 고급 린넨 원단으로 제작된 프리미엄 커튼입니다.</p>
+        <!-- ... 나머지 상세 정보 ... -->
+    </div>
+</div>
+
+<style>
+.product-detail {
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.product-images {
+    flex: 1;
+}
+
+.main-image {
+    margin-bottom: 20px;
+}
+
+.main-image img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.thumbnail-images {
+    display: flex;
+    gap: 10px;
+}
+
+.thumbnail-images img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    cursor: pointer;
+}
+</style> 

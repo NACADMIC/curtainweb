@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>블라인드 - 유명커튼블라인드</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1><a href="../index.html" class="logo-text">유명커튼블라인드</a></h1>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="curtains.html">커튼</a></li>
+                    <li><a href="blinds.html" class="active">블라인드</a></li>
+                    <li><a href="portfolio.html">시공사례</a></li>
+                    <li><a href="contact.html">상담신청</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="page-content">
+        <div class="container">
+            <h2 class="page-title">블라인드 컬렉션</h2>
+            <div class="product-grid">
+                <!-- 블라인드 제품 1 -->
+                <div class="product-card">
+                    <img src="https://images.pexels.com/photos/1669799/pexels-photo-1669799.jpeg" alt="롤러블라인드">
+                    <div class="product-info">
+                        <h3>프리미엄 롤러블라인드</h3>
+                        <p>심플하고 모던한 디자인</p>
+                        <ul class="product-features">
+                            <li>부드러운 작동</li>
+                            <li>다양한 컬러</li>
+                            <li>원터치 시스템</li>
+                        </ul>
+                        <button class="detail-btn">상세보기</button>
+                    </div>
+                </div>
+
+                <!-- 블라인드 제품 2 -->
+                <div class="product-card">
+                    <img src="https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg" alt="버티컬 블라인드">
+                    <div class="product-info">
+                        <h3>버티컬 블라인드</h3>
+                        <p>세련된 수직형 디자인</p>
+                        <ul class="product-features">
+                            <li>자유로운 각도조절</li>
+                            <li>넓은 면적 적용</li>
+                            <li>편리한 유지관리</li>
+                        </ul>
+                        <button class="detail-btn">상세보기</button>
+                    </div>
+                </div>
+
+                <!-- 블라인드 제품 3 -->
+                <div class="product-card">
+                    <img src="https://images.pexels.com/photos/1082355/pexels-photo-1082355.jpeg" alt="우드블라인드">
+                    <div class="product-info">
+                        <h3>프리미엄 우드블라인드</h3>
+                        <p>고급스러운 원목 소재</p>
+                        <ul class="product-features">
+                            <li>내추럴한 감성</li>
+                            <li>견고한 내구성</li>
+                            <li>고급스러운 외관</li>
+                        </ul>
+                        <button class="detail-btn">상세보기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="company-info">
+                <p>상호: 유명커튼블라인드 | 대표: 홍길동</p>
+                <p>대표번호: 1234-5678</p>
+                <p>주소: 서울시 강남구 테헤란로...</p>
+                <p>사업자등록번호: 123-45-67890</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 플로팅 전화 버튼 -->
+    <div class="floating-call">
+        <a href="tel:02-588-2389" class="call-button">
+            <i class="fas fa-phone"></i>
+            <span class="call-text">02-588-2389</span>
+        </a>
+    </div>
+
+    <!-- 제품 상세보기 모달 -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="제품 이미지">
+                <div class="modal-info">
+                    <h2 id="modalTitle"></h2>
+                    <p id="modalDescription"></p>
+                    <h3>제품 특징</h3>
+                    <ul id="modalFeatures"></ul>
+                    <div class="modal-buttons">
+                        <button class="estimate-btn" onclick="location.href='contact.html'">무료 견적 상담</button>
+                        <button class="call-btn" onclick="location.href='tel:02-588-2389'">전화 상담</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .product-info p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .product-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .product-features li {
+            padding: 5px 0;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        .product-features li:before {
+            content: "•";
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .detail-btn {
+            width: 100%;
+            padding: 10px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .detail-btn:hover {
+            background: #45a049;
+        }
+
+        .page-title {
+            text-align: center;
+            margin: 40px 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 50px auto;
+            padding: 0;
+            width: 90%;
+            max-width: 900px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 20px 40px 40px;
+        }
+
+        .modal-body img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .modal-info h2 {
+            margin: 0 0 15px 0;
+            color: #333;
+        }
+
+        .modal-info p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .modal-info h3 {
+            margin: 20px 0 10px 0;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        #modalFeatures {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+        }
+
+        #modalFeatures li {
+            padding: 8px 0;
+            color: #555;
+            border-bottom: 1px solid #eee;
+        }
+
+        #modalFeatures li:before {
+            content: "✓ ";
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .estimate-btn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .estimate-btn:hover {
+            background: #45a049;
+        }
+
+        .call-btn {
+            background: #2196F3;
+            color: white;
+        }
+
+        .call-btn:hover {
+            background: #0b7dda;
+        }
+
+        @media (max-width: 768px) {
+            .modal-body {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .modal-body img {
+                height: 250px;
+            }
+        }
+    </style>
+
+    <script>
+        // 제품 데이터
+        const products = {
+            'roller-blind': {
+                title: '프리미엄 롤러블라인드',
+                description: '심플하고 모던한 디자인의 롤러블라인드입니다. 부드러운 작동과 다양한 컬러로 어떤 공간에도 잘 어울립니다.',
+                features: ['부드러운 작동', '다양한 컬러', '원터치 시스템', '간편한 설치', '차광/투광 선택 가능'],
+                image: 'https://images.pexels.com/photos/1669799/pexels-photo-1669799.jpeg'
+            },
+            'vertical-blind': {
+                title: '버티컬 블라인드',
+                description: '세련된 수직형 디자인으로 넓은 창에 적합합니다. 자유로운 각도 조절로 채광과 프라이버시를 동시에 해결합니다.',
+                features: ['자유로운 각도조절', '넓은 면적 적용', '편리한 유지관리', '다양한 원단', '공간 확장 효과'],
+                image: 'https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg'
+            },
+            'wood-blind': {
+                title: '프리미엄 우드블라인드',
+                description: '고급스러운 원목 소재로 제작된 우드블라인드입니다. 내추럴한 감성과 견고한 내구성이 특징입니다.',
+                features: ['내추럴한 감성', '견고한 내구성', '고급스러운 외관', '친환경 원목', '다양한 마감 처리'],
+                image: 'https://images.pexels.com/photos/1082355/pexels-photo-1082355.jpeg'
+            }
+        };
+
+        // 모달 요소
+        const modal = document.getElementById('productModal');
+        const closeBtn = document.querySelector('.close');
+
+        // 상세보기 버튼 클릭 이벤트
+        document.querySelectorAll('.detail-btn').forEach((btn, index) => {
+            btn.addEventListener('click', function() {
+                const productKeys = ['roller-blind', 'vertical-blind', 'wood-blind'];
+                const productKey = productKeys[index];
+                const product = products[productKey];
+
+                // 모달에 제품 정보 표시
+                document.getElementById('modalTitle').textContent = product.title;
+                document.getElementById('modalDescription').textContent = product.description;
+                document.getElementById('modalImage').src = product.image;
+                
+                const featuresList = document.getElementById('modalFeatures');
+                featuresList.innerHTML = '';
+                product.features.forEach(feature => {
+                    const li = document.createElement('li');
+                    li.textContent = feature;
+                    featuresList.appendChild(li);
+                });
+
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // 모달 닫기
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html> 

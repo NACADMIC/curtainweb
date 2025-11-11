@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제품관리 - 커튼&블라인드스토리</title>
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-products">
+    <nav class="admin-nav">
+        <!-- 동일한 네비게이션 -->
+    </nav>
+
+    <main class="admin-main">
+        <div class="content-header">
+            <h2>제품관리</h2>
+            <button id="addProductBtn" class="primary-btn">새 제품 등록</button>
+        </div>
+
+        <div class="product-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>이미지</th>
+                        <th>제품명</th>
+                        <th>카테고리</th>
+                        <th>가격</th>
+                        <th>상태</th>
+                        <th>관리</th>
+                    </tr>
+                </thead>
+                <tbody id="productList">
+                    <!-- JS로 동적 추가 -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 제품 등록/수정 모달 -->
+        <div id="productModal" class="modal">
+            <div class="modal-content">
+                <h3>제품 등록/수정</h3>
+                <form id="productForm">
+                    <div class="form-group">
+                        <label>제품명</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>카테고리</label>
+                        <select name="category" required>
+                            <option value="curtain">커튼</option>
+                            <option value="blind">블라인드</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>가격</label>
+                        <input type="number" name="price" required>
+                    </div>
+                    <div class="form-group">
+                        <label>이미지</label>
+                        <input type="file" name="image" accept="image/*" multiple>
+                    </div>
+                    <div class="form-group">
+                        <label>설명</label>
+                        <textarea name="description"></textarea>
+                    </div>
+                    <div class="button-group">
+                        <button type="submit" class="primary-btn">저장</button>
+                        <button type="button" class="cancel-btn" onclick="closeModal()">취소</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script src="js/admin.js"></script>
+</body>
+</html> 
