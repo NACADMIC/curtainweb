@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관리자 로그인 - 커튼&블라인드스토리</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="../js/firebase-config.js"></script>
+    
     <style>
         body {
             margin: 0;
@@ -95,17 +103,19 @@
     </div>
 
     <script>
-        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+        document.getElementById('adminLoginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const id = document.getElementById('adminId').value;
-            const pw = document.getElementById('adminPw').value;
+            const email = document.getElementById('adminId').value;
+            const password = document.getElementById('adminPw').value;
             
-            // 기본 관리자 계정
-            if(id === 'admin' && pw === '1234') {
+            try {
+                // Firebase Authentication 로그인
+                await auth.signInWithEmailAndPassword(email, password);
                 localStorage.setItem('adminLoggedIn', 'true');
                 window.location.href = 'dashboard.html';
-            } else {
-                alert('아이디 또는 비밀번호가 잘못되었습니다.');
+            } catch (error) {
+                console.error('로그인 오류:', error);
+                alert('로그인 실패: ' + error.message);
             }
         });
     </script>

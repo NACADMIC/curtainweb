@@ -75,25 +75,9 @@
 </head>
 <body>
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
-
-    <script>
-    const firebaseConfig = {
-    apiKey: "AIzaSyAFfU5MOxvIh9RKrQQ51cuzDZnCB-97GiQ",
-    authDomain: "curtainweb-7fc08.firebaseapp.com",
-    projectId: "curtainweb-7fc08",
-    storageBucket: "curtainweb-7fc08.firebasestorage.app",
-    messagingSenderId: "866400998037",
-    appId: "1:866400998037:web:4350252c7e8cf6e6f2819c",
-    measurementId: "G-PVBBZ3SV9W"
-  };
-
-    // Firebase 초기화
-    firebase.initializeApp(firebaseConfig);
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
 
     <header class="header">
         <div class="container">
@@ -261,25 +245,13 @@
             submitBtn.textContent = '전송 중...';
             
             try {
-                // EmailJS로 이메일 전송
-                await emailjs.send(
-                    'YOUR_SERVICE_ID',      // EmailJS 서비스 ID
-                    'YOUR_TEMPLATE_ID',     // EmailJS 템플릿 ID
-                    {
-                        to_email: 'okyoucandoit@hanmail.net',
-                        from_name: formData.get('name'),
-                        phone: formData.get('phone'),
-                        address: formData.get('address'),
-                        message: formData.get('message')
-                    }
-                );
-                
-                // Firebase에도 저장 (선택사항)
-                await firebase.firestore().collection('inquiries').add({
+                // Firebase에 문의사항 저장
+                await db.collection('inquiries').add({
                     name: formData.get('name'),
                     phone: formData.get('phone'),
                     address: formData.get('address'),
                     message: formData.get('message'),
+                    read: false,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 
