@@ -14,5 +14,4 @@ firebase.initializeApp(firebaseConfig);
 // Firebase 서비스
 const auth = firebase.auth();
 const db = firebase.firestore();
-const storage = firebase.storage();
 
