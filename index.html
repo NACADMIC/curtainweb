@@ -241,73 +241,33 @@
 
         // Firebase에서 메인 이미지 로드
         async function loadMainImage() {
-            console.log('=== 메인 이미지 로딩 시작 ===');
+            console.log('메인 이미지 로딩...');
             const img = document.getElementById('mainImage');
             const debugInfo = document.getElementById('debugInfo');
             
-            console.log('이미지 엘리먼트:', img);
-            console.log('현재 이미지 src:', img ? img.src : 'null');
-            
             try {
-                debugInfo.innerHTML = 'Firebase 연결 중...';
-                debugInfo.style.background = '#2196F3';
-                debugInfo.style.color = 'white';
-                
                 const snapshot = await db.collection('main-images').get();
-                console.log('✅ Firebase 응답 성공! 이미지 수:', snapshot.size);
+                console.log('이미지 수:', snapshot.size);
                 
                 if (!snapshot.empty) {
                     const image = snapshot.docs[0].data();
-                    console.log('📸 이미지 데이터:', JSON.stringify(image));
+                    console.log('이미지 URL:', image.imageUrl);
                     
                     if (img && image.imageUrl) {
-                        console.log('🔄 이미지 교체 시도...');
-                        console.log('  기존:', img.src);
-                        console.log('  새것:', image.imageUrl);
-                        
-                        debugInfo.innerHTML = `✅ 이미지 교체 중... ${image.imageUrl}`;
-                        debugInfo.style.background = '#4CAF50';
-                        
-                        // 강제로 이미지 교체
                         img.src = image.imageUrl;
-                        img.alt = image.title || '메인 이미지';
-                        
-                        console.log('✅ img.src 설정 완료:', img.src);
-                        
-                        // 이미지 로드 완료 확인
-                        img.onload = function() {
-                            console.log('🎉 이미지 로드 완료!');
-                            debugInfo.innerHTML = '✅ 사용자 이미지 로드 완료!';
-                            setTimeout(() => {
-                                debugInfo.style.display = 'none';
-                            }, 3000);
-                        };
-                        
-                        img.onerror = function() {
-                            console.error('❌ 이미지 로드 실패!');
-                            debugInfo.innerHTML = '❌ 이미지 로드 실패';
-                            debugInfo.style.background = '#f44336';
-                        };
-                    } else {
-                        console.log('❌ 이미지 엘리먼트 또는 URL 없음');
-                        debugInfo.innerHTML = '❌ 이미지 URL 없음';
-                        debugInfo.style.background = '#f44336';
+                        debugInfo.innerHTML = '✅ 사용자 이미지 로드됨';
+                        debugInfo.style.background = '#4CAF50';
+                        debugInfo.style.color = 'white';
+                        setTimeout(() => debugInfo.style.display = 'none', 3000);
+                        console.log('✅ 이미지 변경 완료');
                     }
                 } else {
-                    console.log('⚠️ Firebase에 등록된 이미지 없음');
-                    debugInfo.innerHTML = '⚠️ Firebase에 이미지 없음 - 기본 이미지 표시';
-                    debugInfo.style.background = '#ff9800';
-                    setTimeout(() => {
-                        debugInfo.style.display = 'none';
-                    }, 3000);
+                    console.log('Firebase에 이미지 없음');
+                    debugInfo.style.display = 'none';
                 }
             } catch (error) {
-                console.error('❌❌❌ 오류 발생:', error);
-                console.error('오류 상세:', error.message);
-                console.error('오류 스택:', error.stack);
-                debugInfo.innerHTML = `❌ 오류: ${error.message}`;
-                debugInfo.style.background = '#f44336';
-                debugInfo.style.color = 'white';
+                console.error('이미지 로드 실패:', error);
+                debugInfo.style.display = 'none';
             }
         }
 
@@ -331,19 +291,15 @@
 
         // Firebase에서 제품 로드
         async function loadProducts() {
-            console.log('=== 제품 로딩 시작 ===');
+            console.log('제품 로딩...');
             const productGrid = document.getElementById('productGrid');
             
             try {
-                console.log('Firebase에서 제품 조회 중...');
-                productGrid.innerHTML = '<div class="product-card"><p style="text-align: center;">제품 로딩 중...</p></div>';
-                
                 const snapshot = await db.collection('products').limit(6).get();
-                console.log('✅ Firebase 응답 성공! 제품 수:', snapshot.size);
+                console.log('제품 수:', snapshot.size);
                 
                 if (snapshot.empty) {
-                    console.log('❌ 등록된 제품 없음');
-                    productGrid.innerHTML = '<div class="product-card"><p style="text-align: center; color: #888;">등록된 제품이 없습니다.<br>관리자 페이지에서 제품을 등록하세요.</p></div>';
+                    productGrid.innerHTML = '<div class="product-card"><p style="text-align: center; color: #888;">등록된 제품이 없습니다</p></div>';
                     return;
                 }
                 
@@ -351,7 +307,7 @@
                 
                 snapshot.forEach(doc => {
                     const product = doc.data();
-                    console.log('제품:', product.name, product);
+                    console.log('제품:', product.name);
                     
                     const card = document.createElement('div');
                     card.className = 'product-card';
@@ -364,25 +320,20 @@
                     productGrid.appendChild(card);
                 });
                 
-                console.log('✅ 제품 로딩 완료!');
+                console.log('✅ 제품 로딩 완료');
             } catch (error) {
-                console.error('❌❌❌ 제품 로드 실패:', error);
-                console.error('오류 상세:', error.message);
-                productGrid.innerHTML = `<div class="product-card"><p style="text-align: center; color: red;">제품 로드 실패: ${error.message}</p></div>`;
+                console.error('제품 로드 실패:', error);
+                productGrid.innerHTML = '<div class="product-card"><p style="text-align: center; color: #888;">제품을 불러올 수 없습니다</p></div>';
             }
         }
         
-        // 페이지 완전히 로드 후 실행
-        window.onload = function() {
-            console.log('=== 페이지 로드 완료 ===');
-            console.log('Firebase 연결 상태:', typeof firebase !== 'undefined' ? '정상' : '실패');
-            console.log('DB 객체:', typeof db !== 'undefined' ? '정상' : '실패');
-            
-            // 즉시 실행
+        // 1초 후 실행 (Firebase 완전히 로드 대기)
+        setTimeout(function() {
+            console.log('=== 데이터 로딩 시작 ===');
             loadMainImage();
             loadTexts();
             loadProducts();
-        };
+        }, 1000);
 
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
