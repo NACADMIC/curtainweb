@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시공사례 - 유명커튼블라인드</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1><a href="../index.html" class="logo-text">유명커튼블라인드</a></h1>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="curtains.html">커튼</a></li>
+                    <li><a href="blinds.html">블라인드</a></li>
+                    <li><a href="portfolio.html" class="active">시공사례</a></li>
+                    <li><a href="contact.html">상담신청</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="page-content">
+        <div class="container">
+            <h2 class="page-title">시공사례</h2>
+            <div class="portfolio-grid">
+                <!-- 시공사례 1 -->
+                <div class="portfolio-item">
+                    <img src="https://images.pexels.com/photos/1571458/pexels-photo-1571458.jpeg" alt="아파트 거실 시공">
+                    <div class="portfolio-info">
+                        <h3>강남구 아파트</h3>
+                        <p>모던한 그레이 톤의 거실 커튼</p>
+                        <span class="location">서울 강남구</span>
+                    </div>
+                </div>
+
+                <!-- 시공사례 2 -->
+                <div class="portfolio-item">
+                    <img src="https://images.pexels.com/photos/1766479/pexels-photo-1766479.jpeg" alt="사무실 블라인드">
+                    <div class="portfolio-info">
+                        <h3>역삼동 오피스</h3>
+                        <p>롤러블라인드 전체 시공</p>
+                        <span class="location">서울 강남구</span>
+                    </div>
+                </div>
+
+                <!-- 시공사례 3 -->
+                <div class="portfolio-item">
+                    <img src="https://images.pexels.com/photos/2082087/pexels-photo-2082087.jpeg" alt="카페 커튼">
+                    <div class="portfolio-info">
+                        <h3>신사동 카페</h3>
+                        <p>쉬어커튼으로 분위기 연출</p>
+                        <span class="location">서울 강남구</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="company-info">
+                <p>상호: 유명커튼블라인드 | 대표: 홍길동</p>
+                <p>대표번호: 1234-5678</p>
+                <p>주소: 서울시 강남구 테헤란로...</p>
+                <p>사업자등록번호: 123-45-67890</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 플로팅 전화 버튼 -->
+    <div class="floating-call">
+        <a href="tel:02-588-2389" class="call-button">
+            <i class="fas fa-phone"></i>
+            <span class="call-text">02-588-2389</span>
+        </a>
+    </div>
+
+    <!-- 이미지 확대 모달 -->
+    <div id="imageModal" class="image-modal">
+        <span class="modal-close">&times;</span>
+        <img class="modal-content-img" id="expandedImage">
+        <div class="image-caption">
+            <h3 id="captionTitle"></h3>
+            <p id="captionDescription"></p>
+            <p id="captionLocation"></p>
+        </div>
+    </div>
+
+    <style>
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+        }
+
+        .portfolio-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .portfolio-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+        }
+
+        .portfolio-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2em;
+        }
+
+        .portfolio-info p {
+            margin: 0 0 5px 0;
+            font-size: 0.9em;
+        }
+
+        .portfolio-info .location {
+            font-size: 0.85em;
+            opacity: 0.8;
+        }
+
+        .page-title {
+            text-align: center;
+            margin: 40px 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 이미지 확대 모달 스타일 */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            overflow: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2001;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: #bbb;
+        }
+
+        .modal-content-img {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 80vh;
+            margin-top: 50px;
+            border-radius: 8px;
+            animation: zoom 0.3s;
+        }
+
+        @keyframes zoom {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .image-caption {
+            margin: 20px auto;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 20px;
+        }
+
+        .image-caption h3 {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .image-caption p {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            .modal-close {
+                top: 10px;
+                right: 20px;
+                font-size: 30px;
+            }
+
+            .modal-content-img {
+                max-width: 95%;
+                margin-top: 30px;
+            }
+        }
+    </style>
+
+    <script>
+        // 시공사례 데이터
+        const portfolioData = [
+            {
+                title: '강남구 아파트',
+                description: '모던한 그레이 톤의 거실 커튼으로 세련된 분위기 연출',
+                location: '서울 강남구',
+                image: 'https://images.pexels.com/photos/1571458/pexels-photo-1571458.jpeg'
+            },
+            {
+                title: '역삼동 오피스',
+                description: '롤러블라인드 전체 시공으로 깔끔한 업무 환경 구축',
+                location: '서울 강남구',
+                image: 'https://images.pexels.com/photos/1766479/pexels-photo-1766479.jpeg'
+            },
+            {
+                title: '신사동 카페',
+                description: '쉬어커튼으로 아늑하고 따뜻한 카페 분위기 연출',
+                location: '서울 강남구',
+                image: 'https://images.pexels.com/photos/2082087/pexels-photo-2082087.jpeg'
+            }
+        ];
+
+        // 모달 요소
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('expandedImage');
+        const closeBtn = document.querySelector('.modal-close');
+
+        // 시공사례 클릭 이벤트
+        document.querySelectorAll('.portfolio-item').forEach((item, index) => {
+            item.addEventListener('click', function() {
+                const data = portfolioData[index];
+                
+                // 모달에 이미지와 정보 표시
+                modal.style.display = 'block';
+                modalImg.src = data.image;
+                document.getElementById('captionTitle').textContent = data.title;
+                document.getElementById('captionDescription').textContent = data.description;
+                document.getElementById('captionLocation').textContent = '위치: ' + data.location;
+                
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // 모달 닫기
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // 모달 배경 클릭 시 닫기
+        modal.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html> 

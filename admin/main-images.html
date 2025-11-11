@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메인 이미지 관리 - 커튼&블라인드스토리</title>
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .image-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .image-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            background: white;
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        
+        .image-controls {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .btn-delete {
+            background: #ff4444;
+            color: white;
+        }
+        
+        .btn-order {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .upload-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .back-btn {
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button onclick="location.href='dashboard.html'" class="back-btn">
+            ← 대시보드로 돌아가기
+        </button>
+        
+        <h1>메인 이미지 관리</h1>
+        
+        <!-- 이미지 업로드 섹션 -->
+        <div class="upload-section">
+            <h3>새 이미지 추가</h3>
+            <form id="uploadForm">
+                <input type="file" id="imageUpload" accept="image/*" required>
+                <input type="text" placeholder="이미지 제목" required>
+                <input type="text" placeholder="이미지 설명" required>
+                <button type="submit" class="btn btn-order">업로드</button>
+            </form>
+        </div>
+        
+        <!-- 이미지 목록 -->
+        <div class="image-list">
+            <!-- 이미지 아이템 예시 -->
+            <div class="image-item">
+                <img src="https://images.unsplash.com/photo-1513519245088-0e12902e35ca" alt="메인 이미지 1">
+                <h4>프리미엄 커튼</h4>
+                <p>고급스러운 분위기 연출</p>
+                <div class="image-controls">
+                    <button class="btn btn-order">↑ 위로</button>
+                    <button class="btn btn-order">↓ 아래로</button>
+                    <button class="btn btn-delete">삭제</button>
+                </div>
+            </div>
+            
+            <!-- 추가 이미지 아이템들 -->
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
+    <!-- Firebase 초기화 -->
+    <script src="../js/firebase-init.js"></script>
+    
+    <!-- 메인 이미지 관리 스크립트 -->
+    <script src="js/main-images.js"></script>
+    <script>
+        const mainImageManager = new MainImageManager();
+    </script>
+</body>
+</html> 

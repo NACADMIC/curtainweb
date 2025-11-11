@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상담신청 - 유명커튼블라인드</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            emailjs.init("YOUR_PUBLIC_KEY"); // EmailJS 공개 키를 여기에 입력하세요
+        })();
+    </script>
+    <style>
+        .contact-form {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background: #fff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            flex: 1;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #45a049;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .contact-form {
+                padding: 20px;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1><a href="../index.html" class="logo-text">유명커튼블라인드</a></h1>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="curtains.html">커튼</a></li>
+                    <li><a href="blinds.html">블라인드</a></li>
+                    <li><a href="portfolio.html">시공사례</a></li>
+                    <li><a href="contact.html" class="active">상담신청</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="page-content">
+        <div class="container">
+            <h2 class="page-title">상담신청</h2>
+            <div class="contact-form">
+                <form id="consultForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">이름 <span class="required">*</span></label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">연락처 <span class="required">*</span></label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">이메일</label>
+                            <input type="email" id="email" name="email">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">주소 <span class="required">*</span></label>
+                            <input type="text" id="address" name="address" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">문의내용 <span class="required">*</span></label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">상담신청</button>
+                </form>
+            </div>
+            
+            <div class="contact-info">
+                <h3>찾아오시는 길</h3>
+                <p>주소: 서울시 강남구 테헤란로...</p>
+                <p>전화: 1234-5678</p>
+                <p>영업시간: 평일 09:00 - 18:00</p>
+                <!-- 지도 영역 -->
+                <div id="map" class="map-container">
+                    <!-- 카카오맵 등 지도 API 적용 -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="company-info">
+                <p>상호: 유명커튼블라인드 | 대표: 홍길동</p>
+                <p>대표번호: 1234-5678</p>
+                <p>주소: 서울시 강남구 테헤란로...</p>
+                <p>사업자등록번호: 123-45-67890</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 플로팅 전화 버튼 -->
+    <div class="floating-call">
+        <a href="tel:02-588-2389" class="call-button">
+            <i class="fas fa-phone"></i>
+            <span class="call-text">02-588-2389</span>
+        </a>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+
+    <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAFfU5MOxvIh9RKrQQ51cuzDZnCB-97GiQ",
+        authDomain: "curtainweb-7fc08.firebaseapp.com",
+        projectId: "curtainweb-7fc08",
+        storageBucket: "curtainweb-7fc08.firebasestorage.app",
+        messagingSenderId: "866400998037",
+        appId: "1:866400998037:web:4350252c7e8cf6e6f2819c",
+        measurementId: "G-PVBBZ3SV9W"
+    };
+
+    // Firebase 초기화
+    firebase.initializeApp(firebaseConfig);
+
+    // 상담신청 폼 처리
+    document.getElementById('consultForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(form);
+        
+        // 버튼 비활성화
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = '전송 중...';
+        
+        try {
+            // EmailJS로 이메일 전송
+            await emailjs.send(
+                'YOUR_SERVICE_ID',      // EmailJS 서비스 ID
+                'YOUR_TEMPLATE_ID',     // EmailJS 템플릿 ID
+                {
+                    to_email: 'okyoucandoit@hanmail.net',
+                    from_name: formData.get('name'),
+                    phone: formData.get('phone'),
+                    email: formData.get('email'),
+                    address: formData.get('address'),
+                    message: formData.get('message')
+                }
+            );
+            
+            // Firebase에도 저장 (선택사항)
+            await firebase.firestore().collection('inquiries').add({
+                name: formData.get('name'),
+                phone: formData.get('phone'),
+                email: formData.get('email'),
+                address: formData.get('address'),
+                message: formData.get('message'),
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            
+            alert('문의가 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.');
+            form.reset();
+        } catch (error) {
+            console.error('문의 접수 실패:', error);
+            alert('문의 접수에 실패했습니다. 다시 시도해주세요.');
+        } finally {
+            // 버튼 활성화
+            submitBtn.disabled = false;
+            submitBtn.textContent = '상담신청';
+        }
+    });
+    </script>
+</body>
+</html> 

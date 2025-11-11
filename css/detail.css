@@ -1,0 +1,47 @@
+/* 상세 페이지 공통 스타일 */
+.page-title {
+    margin: 100px 0 40px;
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+/* 필터 섹션 */
+.filter-section {
+    margin-bottom: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+.filter-section select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* 제품 상세 페이지 */
+.product-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    padding: 50px 0;
+}
+
+.product-images .main-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.thumbnail-images {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.thumbnail-images img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    cursor: pointer;
+} 

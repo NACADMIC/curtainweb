@@ -1,0 +1,528 @@
+/* 리셋 및 기본 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 헤더 스타일 */
+.header {
+    position: fixed;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    padding: 15px 0;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 40px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu li a {
+    font-size: 17px;
+    font-weight: 700;
+    color: #333;
+    text-decoration: none;
+    position: relative;
+    padding: 5px 0;
+    transition: all 0.3s ease;
+}
+
+.nav-menu li a:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #333;
+    transition: all 0.3s ease;
+}
+
+.nav-menu li a:hover {
+    color: #000;
+}
+
+.nav-menu li a:hover:after {
+    width: 100%;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo-text {
+    background: linear-gradient(45deg, #1a1a1a, #4a4a4a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+}
+
+/* 메인 비주얼 슬라이더 */
+.main-visual {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.slider img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+}
+
+.slide-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    width: 100%;
+    max-width: 1000px;
+    padding: 0 20px;
+    z-index: 2;
+}
+
+.slide-content h2 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    line-height: 1.2;
+    letter-spacing: -1px;
+    text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease forwards;
+}
+
+.slide-content p {
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 35px;
+    line-height: 1.6;
+    letter-spacing: -0.5px;
+    text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease 0.3s forwards;
+}
+
+.cta-button {
+    padding: 18px 45px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease 0.6s forwards;
+}
+
+.cta-button:hover {
+    background: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* 애니메이션 키프레임 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .slide-content h2 {
+        font-size: 2.5rem;
+    }
+    
+    .slide-content p {
+        font-size: 1.2rem;
+    }
+    
+    .cta-button {
+        padding: 15px 35px;
+        font-size: 1rem;
+    }
+}
+
+/* 제품 카드 스타일 */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 40px 0;
+}
+
+.product-card {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.product-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+
+.product-card:hover img {
+    transform: scale(1.05);
+}
+
+.product-card h4 {
+    font-size: 1.2rem;
+    margin: 15px 20px 10px;
+    font-weight: 500;
+}
+
+.product-card p {
+    color: #666;
+    margin: 0 20px 15px;
+    font-size: 0.95rem;
+}
+
+.product-btn {
+    margin: 0 20px 20px;
+    padding: 10px 25px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.product-btn:hover {
+    background: #555;
+}
+
+/* 상담 폼 스타일 */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px;
+    background: #f9f9f9;
+    border-radius: 10px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.contact-form button {
+    background: #333;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 링크 스타일 추가 */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.header h1 a:hover,
+.nav-menu a:hover {
+    color: #666;
+}
+
+.product-card {
+    cursor: pointer;
+}
+
+/* Google Fonts 추가 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+/* 기본 스타일 수정 */
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
+    letter-spacing: -0.5px;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 50px;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.section-title:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: #333;
+}
+
+/* Google Fonts에 더 굵은 폰트 추가 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+
+/* 현재 페이지 메뉴 표시 */
+.nav-menu li a.active {
+    color: #000;
+    font-weight: 700;
+}
+
+.nav-menu li a.active:after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #333;
+}
+
+/* 페이지 컨텐츠 여백 수정 */
+.page-content {
+    padding-top: 150px; /* 헤더 높이 + 추가 여백 */
+    min-height: 80vh; /* 최소 높이 설정 */
+}
+
+.page-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 50px;
+    color: #1a1a1a;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+/* 페이지 제목 밑줄 효과 */
+.page-title:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: #333;
+}
+
+/* 서브 페이지 헤더 배경 더 확실하게 */
+.header {
+    position: fixed;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    padding: 15px 0;
+}
+
+/* 기본 스크롤 설정 */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; /* 가로 스크롤 방지 */
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    overflow-y: auto; /* 세로 스크롤 허용 */
+}
+
+/* 페이지 컨텐츠 여백 및 최소 높이 수정 */
+.page-content {
+    padding-top: 150px;
+    padding-bottom: 100px; /* 하단 여백 추가 */
+    min-height: calc(100vh - 250px); /* 헤더/푸터 고려한 최소 이 */
+}
+
+/* 제품 그리 수정 */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+}
+
+/* 컨테이너 수정 */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 스크롤바 디자인 개선 (선택사항) */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* 관리자 접근 버튼 스타일 */
+.admin-access {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.admin-btn {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
+}
+
+.admin-btn:hover {
+    color: #333;
+}
+
+/* 플로팅 전화 버튼 */
+.floating-call {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 9999;
+}
+
+.call-button {
+    display: flex;
+    align-items: center;
+    background: #4CAF50;
+    color: white !important;
+    padding: 12px 20px;
+    border-radius: 30px;
+    text-decoration: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.call-button:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: white !important;
+}
+
+.call-button i {
+    margin-right: 8px;
+    font-size: 20px;
+    color: white !important;
+}
+
+.call-text {
+    font-size: 16px;
+    font-weight: bold;
+    color: white !important;
+}
+
+@media (max-width: 768px) {
+    .floating-call {
+        left: 10px;
+        bottom: 10px;
+    }
+    
+    .call-button {
+        padding: 10px 15px;
+    }
+    
+    .call-text {
+        font-size: 14px;
+    }
+}
+
+/* 모든 페이지의 `<head>` 태그 안에 Font Awesome 아이콘 추가 */
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.product-card img,
+.portfolio-item img,
+.slide img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    background-color: #f5f5f5; /* 이미지 로딩 전 배경색 */
+}
