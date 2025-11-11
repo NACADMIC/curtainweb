@@ -26,36 +26,8 @@
     <main class="page-content">
         <div class="container">
             <h2 class="page-title">시공사례</h2>
-            <div class="portfolio-grid">
-                <!-- 시공사례 1 -->
-                <div class="portfolio-item">
-                    <img src="https://images.pexels.com/photos/1571458/pexels-photo-1571458.jpeg" alt="아파트 거실 시공">
-                    <div class="portfolio-info">
-                        <h3>강남구 아파트</h3>
-                        <p>모던한 그레이 톤의 거실 커튼</p>
-                        <span class="location">서울 강남구</span>
-                    </div>
-                </div>
-
-                <!-- 시공사례 2 -->
-                <div class="portfolio-item">
-                    <img src="https://images.pexels.com/photos/1766479/pexels-photo-1766479.jpeg" alt="사무실 블라인드">
-                    <div class="portfolio-info">
-                        <h3>역삼동 오피스</h3>
-                        <p>롤러블라인드 전체 시공</p>
-                        <span class="location">서울 강남구</span>
-                    </div>
-                </div>
-
-                <!-- 시공사례 3 -->
-                <div class="portfolio-item">
-                    <img src="https://images.pexels.com/photos/2082087/pexels-photo-2082087.jpeg" alt="카페 커튼">
-                    <div class="portfolio-info">
-                        <h3>신사동 카페</h3>
-                        <p>쉬어커튼으로 분위기 연출</p>
-                        <span class="location">서울 강남구</span>
-                    </div>
-                </div>
+            <div class="portfolio-grid" id="portfolioGrid">
+                <p style="text-align: center; color: #999; grid-column: 1/-1;">시공사례를 불러오는 중...</p>
             </div>
         </div>
     </main>
@@ -241,49 +213,98 @@
         }
     </style>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
     <script>
-        // 시공사례 데이터
-        const portfolioData = [
-            {
-                title: '강남구 아파트',
-                description: '모던한 그레이 톤의 거실 커튼으로 세련된 분위기 연출',
-                location: '서울 강남구',
-                image: 'https://images.pexels.com/photos/1571458/pexels-photo-1571458.jpeg'
-            },
-            {
-                title: '역삼동 오피스',
-                description: '롤러블라인드 전체 시공으로 깔끔한 업무 환경 구축',
-                location: '서울 강남구',
-                image: 'https://images.pexels.com/photos/1766479/pexels-photo-1766479.jpeg'
-            },
-            {
-                title: '신사동 카페',
-                description: '쉬어커튼으로 아늑하고 따뜻한 카페 분위기 연출',
-                location: '서울 강남구',
-                image: 'https://images.pexels.com/photos/2082087/pexels-photo-2082087.jpeg'
-            }
-        ];
+        // Firebase 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyCM8IflmHHgMaFseEoPPsECsLxsSAjj1Vw",
+            authDomain: "curtainweb.firebaseapp.com",
+            projectId: "curtainweb",
+            storageBucket: "curtainweb.firebasestorage.app",
+            messagingSenderId: "1004027071653",
+            appId: "1:1004027071653:web:f29be419700c6302b6114c"
+        };
 
+        // Firebase 초기화
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        // 시공사례 데이터 배열
+        let portfolioData = [];
+
+        // Firebase에서 시공사례 로드
+        async function loadPortfolios() {
+            try {
+                const snapshot = await db.collection('portfolios').orderBy('createdAt', 'desc').get();
+                const portfolioGrid = document.getElementById('portfolioGrid');
+                portfolioGrid.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    portfolioGrid.innerHTML = '<p style="text-align: center; color: #999; grid-column: 1/-1;">등록된 시공사례가 없습니다.</p>';
+                    return;
+                }
+                
+                portfolioData = []; // 배열 초기화
+                
+                snapshot.forEach((doc) => {
+                    const portfolio = doc.data();
+                    portfolioData.push(portfolio);
+                    
+                    const categoryText = {
+                        'curtain': '커튼',
+                        'blind': '블라인드',
+                        'both': '커튼+블라인드'
+                    }[portfolio.category] || portfolio.category;
+                    
+                    const item = document.createElement('div');
+                    item.className = 'portfolio-item';
+                    item.innerHTML = `
+                        <img src="${portfolio.imageUrl}" alt="${portfolio.title}">
+                        <div class="portfolio-info">
+                            <h3>${portfolio.title}</h3>
+                            <p>${portfolio.description || categoryText}</p>
+                            ${portfolio.location ? `<span class="location">${portfolio.location}</span>` : ''}
+                        </div>
+                    `;
+                    
+                    // 클릭 이벤트 추가
+                    item.addEventListener('click', function() {
+                        openModal(portfolio);
+                    });
+                    
+                    portfolioGrid.appendChild(item);
+                });
+            } catch (error) {
+                console.error('시공사례 로드 실패:', error);
+                document.getElementById('portfolioGrid').innerHTML = 
+                    '<p style="text-align: center; color: #999; grid-column: 1/-1;">시공사례를 불러오는데 실패했습니다.</p>';
+            }
+        }
+        
+        // 모달 열기 함수
+        function openModal(portfolio) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('expandedImage');
+            
+            modal.style.display = 'block';
+            modalImg.src = portfolio.imageUrl;
+            document.getElementById('captionTitle').textContent = portfolio.title;
+            document.getElementById('captionDescription').textContent = portfolio.description || '';
+            document.getElementById('captionLocation').textContent = portfolio.location ? '위치: ' + portfolio.location : '';
+            
+            document.body.style.overflow = 'hidden';
+        }
+        
         // 모달 요소
         const modal = document.getElementById('imageModal');
         const modalImg = document.getElementById('expandedImage');
         const closeBtn = document.querySelector('.modal-close');
 
-        // 시공사례 클릭 이벤트
-        document.querySelectorAll('.portfolio-item').forEach((item, index) => {
-            item.addEventListener('click', function() {
-                const data = portfolioData[index];
-                
-                // 모달에 이미지와 정보 표시
-                modal.style.display = 'block';
-                modalImg.src = data.image;
-                document.getElementById('captionTitle').textContent = data.title;
-                document.getElementById('captionDescription').textContent = data.description;
-                document.getElementById('captionLocation').textContent = '위치: ' + data.location;
-                
-                document.body.style.overflow = 'hidden';
-            });
-        });
+        // 페이지 로드 시 시공사례 로드
+        window.addEventListener('DOMContentLoaded', loadPortfolios);
 
         // 모달 닫기
         closeBtn.onclick = function() {
