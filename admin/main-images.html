@@ -24,6 +24,9 @@
         </div>
     </div>
 
+    <!-- 상태 표시 -->
+    <div id="statusBox" style="display: none; padding: 15px; margin: 20px 0; border-radius: 5px; font-weight: bold;"></div>
+
     <div class="image-list" id="imageList"></div>
 
     <div id="modal" class="modal">
@@ -130,26 +133,44 @@
             });
         }
 
+        function showStatus(message, isSuccess = true) {
+            const statusBox = document.getElementById('statusBox');
+            statusBox.style.display = 'block';
+            statusBox.textContent = message;
+            statusBox.style.background = isSuccess ? '#4CAF50' : '#f44336';
+            statusBox.style.color = 'white';
+            
+            if (isSuccess) {
+                setTimeout(() => {
+                    statusBox.style.display = 'none';
+                }, 5000);
+            }
+        }
+
         document.getElementById('imageForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             console.log('=== 이미지 등록 시작 ===');
             
             const formData = new FormData(e.target);
             const imageFile = formData.get('image');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
             
             if (!imageFile || imageFile.size === 0) {
                 alert('이미지를 선택해주세요.');
                 return;
             }
             
+            submitBtn.disabled = true;
+            submitBtn.textContent = '처리 중...';
+            
             try {
+                showStatus('1/4 이미지 최적화 중...', true);
                 console.log('원본 이미지 크기:', (imageFile.size / 1024 / 1024).toFixed(2), 'MB');
                 
-                // 이미지 리사이즈 및 최적화
-                console.log('이미지 최적화 중...');
                 const optimizedBlob = await resizeImage(imageFile);
                 console.log('최적화 후 크기:', (optimizedBlob.size / 1024 / 1024).toFixed(2), 'MB');
                 
+                showStatus('2/4 imgBB 업로드 중...', true);
                 console.log('이미지 업로드 중...');
                 const imgData = new FormData();
                 imgData.append('image', optimizedBlob, 'optimized.jpg');
@@ -161,24 +182,32 @@
                 const result = await response.json();
                 console.log('imgBB 응답:', result);
                 
-                if (result.success) {
-                    console.log('Firestore 저장 중...');
-                    await db.collection('main-images').add({
-                        title: formData.get('title'),
-                        imageUrl: result.data.url,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    
-                    console.log('✅ 이미지 등록 완료!');
-                    alert('이미지가 등록되었습니다.');
-                    closeModal();
-                    loadImages();
-                } else {
-                    throw new Error('이미지 업로드 실패: ' + JSON.stringify(result));
+                if (!result.success) {
+                    throw new Error('imgBB 업로드 실패: ' + JSON.stringify(result));
                 }
+                
+                showStatus('3/4 Firebase 저장 중...', true);
+                console.log('Firestore 저장 중..., URL:', result.data.url);
+                
+                await db.collection('main-images').add({
+                    title: formData.get('title'),
+                    imageUrl: result.data.url,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                showStatus('✅ 4/4 완료! 이미지가 등록되었습니다. URL: ' + result.data.url, true);
+                console.log('✅ 이미지 등록 완료!');
+                alert('이미지가 등록되었습니다!\n\nFirebase에 저장되었습니다.\n메인 페이지를 새로고침하면 표시됩니다.');
+                
+                closeModal();
+                loadImages();
             } catch (error) {
                 console.error('❌ 오류 발생:', error);
+                showStatus('❌ 오류: ' + error.message, false);
                 alert('이미지 등록 실패: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '저장';
             }
         });
 
