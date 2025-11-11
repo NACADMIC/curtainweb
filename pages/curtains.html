@@ -113,96 +113,8 @@
     <main class="page-content">
         <div class="container">
             <h2 class="page-title">커튼 컬렉션</h2>
-            <div class="product-grid">
-                <!-- 커튼 제품 1 -->
-                <div class="product-card">
-                    <img src="https://images.pexels.com/photos/1743227/pexels-photo-1743227.jpeg" alt="프리미엄 린넨커튼">
-                    <div class="product-info">
-                        <h3>프리미엄 린넨커튼</h3>
-                        <p>100% 자연 소재의 고급 린넨 원단</p>
-                        <ul class="product-features">
-                            <li>자연스러운 주름감</li>
-                            <li>뛰어난 통기성</li>
-                            <li>고급스러운 텍스처</li>
-                        </ul>
-                        <button class="detail-btn">상세보기</button>
-                    </div>
-                </div>
-
-                <!-- 커튼 제품 2 -->
-                <div class="product-card">
-                    <img src="https://images.pexels.com/photos/1668860/pexels-photo-1668860.jpeg" alt="블랙아웃 커튼">
-                    <div class="product-info">
-                        <h3>프리미엄 블랙아웃</h3>
-                        <p>99.9% 빛차단 특수원단</p>
-                        <ul class="product-features">
-                            <li>완벽한 빛차단</li>
-                            <li>보온/단열 효과</li>
-                            <li>고급 코팅 처리</li>
-                        </ul>
-                        <button class="detail-btn">상세보기</button>
-                    </div>
-                </div>
-
-                <!-- 커튼 제품 3 -->
-                <div class="product-card">
-                    <img src="https://images.pexels.com/photos/1571458/pexels-photo-1571458.jpeg" alt="쉬어커튼">
-                    <div class="product-info">
-                        <h3>쉬어커튼</h3>
-                        <p>은은한 채광과 세련된 분위기</p>
-                        <ul class="product-features">
-                            <li>부드러운 채광</li>
-                            <li>가벼운 착용감</li>
-                            <li>모던한 디자인</li>
-                        </ul>
-                        <button class="detail-btn">상세보기</button>
-                    </div>
-                </div>
-
-                <!-- 커튼 제품 4 -->
-                <div class="product-card">
-                    <img src="https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg" alt="호텔식 커튼">
-                    <div class="product-info">
-                        <h3>호텔식 커튼</h3>
-                        <p>호텔급 고급스러운 중직물 원단</p>
-                        <ul class="product-features">
-                            <li>풍성한 주름감</li>
-                            <li>고급스러운 광택</li>
-                            <li>견고한 내구성</li>
-                        </ul>
-                        <button class="detail-btn">상세보기</button>
-                    </div>
-                </div>
-
-                <!-- 커튼 제품 5 -->
-                <div class="product-card">
-                    <img src="https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg" alt="북유럽풍 커튼">
-                    <div class="product-info">
-                        <h3>북유럽풍 커튼</h3>
-                        <p>심플하고 모던한 스칸디나비안 스타일</p>
-                        <ul class="product-features">
-                            <li>미니멀한 디자인</li>
-                            <li>내추럴한 컬러</li>
-                            <li>실용적인 기능성</li>
-                        </ul>
-                        <button class="detail-btn">상세보기</button>
-                    </div>
-                </div>
-
-                <!-- 커튼 제품 6 -->
-                <div class="product-card">
-                    <img src="https://images.pexels.com/photos/1827054/pexels-photo-1827054.jpeg" alt="프린트 커튼">
-                    <div class="product-info">
-                        <h3>프린트 커튼</h3>
-                        <p>다양한 패턴의 디자인 커튼</p>
-                        <ul class="product-features">
-                            <li>독특한 패턴</li>
-                            <li>선명한 프린팅</li>
-                            <li>개성있는 스타일</li>
-                        </ul>
-                        <button class="detail-btn">상세보기</button>
-                    </div>
-                </div>
+            <div class="product-grid" id="productGrid">
+                <p style="text-align: center; color: #999; grid-column: 1/-1;">커튼 제품을 불러오는 중...</p>
             </div>
         </div>
     </main>
@@ -377,8 +289,104 @@
         }
     </style>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
     <script>
-        // 제품 데이터
+        // Firebase 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyCM8IflmHHgMaFseEoPPsECsLxsSAjj1Vw",
+            authDomain: "curtainweb.firebaseapp.com",
+            projectId: "curtainweb",
+            storageBucket: "curtainweb.firebasestorage.app",
+            messagingSenderId: "1004027071653",
+            appId: "1:1004027071653:web:f29be419700c6302b6114c"
+        };
+
+        // Firebase 초기화
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        // 제품 데이터 저장
+        let productsData = [];
+        
+        // Firebase에서 커튼 제품 로드
+        async function loadProducts() {
+            try {
+                const snapshot = await db.collection('products')
+                    .where('category', '==', 'curtain')
+                    .get();
+                
+                const productGrid = document.getElementById('productGrid');
+                productGrid.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    productGrid.innerHTML = '<p style="text-align: center; color: #999; grid-column: 1/-1;">등록된 커튼 제품이 없습니다.</p>';
+                    return;
+                }
+                
+                productsData = []; // 초기화
+                
+                snapshot.forEach((doc) => {
+                    const product = doc.data();
+                    product.id = doc.id;
+                    productsData.push(product);
+                    
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.innerHTML = `
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/300x250'}" alt="${product.name}">
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>${product.description || ''}</p>
+                            <button class="detail-btn" onclick="showProductDetail('${doc.id}')">상세보기</button>
+                        </div>
+                    `;
+                    productGrid.appendChild(card);
+                });
+            } catch (error) {
+                console.error('제품 로드 실패:', error);
+                document.getElementById('productGrid').innerHTML = 
+                    '<p style="text-align: center; color: #999; grid-column: 1/-1;">제품을 불러오는데 실패했습니다.</p>';
+            }
+        }
+        
+        // 페이지 로드 시 제품 로드
+        window.addEventListener('DOMContentLoaded', loadProducts);
+        
+        // 제품 상세 정보 표시
+        function showProductDetail(productId) {
+            const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+            
+            document.getElementById('modalTitle').textContent = product.name;
+            document.getElementById('modalDescription').textContent = product.description || '고품질의 커튼 제품입니다.';
+            document.getElementById('modalImage').src = product.imageUrl || 'https://via.placeholder.com/400x400';
+            
+            const featuresList = document.getElementById('modalFeatures');
+            featuresList.innerHTML = '';
+            
+            // 기본 특징
+            const defaultFeatures = [
+                '고품질 원단 사용',
+                '맞춤 제작 가능',
+                '전문 시공 서비스',
+                '사후 관리 보증',
+                '다양한 컬러 선택'
+            ];
+            
+            defaultFeatures.forEach(feature => {
+                const li = document.createElement('li');
+                li.textContent = feature;
+                featuresList.appendChild(li);
+            });
+            
+            document.getElementById('productModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // 제품 데이터 (fallback)
         const products = {
             'premium-linen': {
                 title: '프리미엄 린넨커튼',
@@ -421,31 +429,6 @@
         // 모달 요소
         const modal = document.getElementById('productModal');
         const closeBtn = document.querySelector('.close');
-
-        // 상세보기 버튼 클릭 이벤트
-        document.querySelectorAll('.detail-btn').forEach((btn, index) => {
-            btn.addEventListener('click', function() {
-                const productKeys = ['premium-linen', 'blackout', 'sheer', 'hotel', 'nordic', 'print'];
-                const productKey = productKeys[index];
-                const product = products[productKey];
-
-                // 모달에 제품 정보 표시
-                document.getElementById('modalTitle').textContent = product.title;
-                document.getElementById('modalDescription').textContent = product.description;
-                document.getElementById('modalImage').src = product.image;
-                
-                const featuresList = document.getElementById('modalFeatures');
-                featuresList.innerHTML = '';
-                product.features.forEach(feature => {
-                    const li = document.createElement('li');
-                    li.textContent = feature;
-                    featuresList.appendChild(li);
-                });
-
-                modal.style.display = 'block';
-                document.body.style.overflow = 'hidden'; // 배경 스크롤 방지
-            });
-        });
 
         // 모달 닫기
         closeBtn.onclick = function() {
