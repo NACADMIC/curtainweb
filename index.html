@@ -110,6 +110,11 @@
     </header>
 
     <main>
+        <!-- 디버그 정보 (테스트용) -->
+        <div id="debugInfo" style="background: #ffeb3b; padding: 10px; text-align: center; font-weight: bold;">
+            메인 이미지 로딩 중...
+        </div>
+
         <section class="main-visual" id="mainVisualSection" style="display: none;">
             <div class="main-visual" id="mainVisual">
                 <img id="mainImage" alt="메인 비주얼">
@@ -241,6 +246,7 @@
             console.log('=== 메인 이미지 로딩 시작 ===');
             const img = document.getElementById('mainImage');
             const section = document.getElementById('mainVisualSection');
+            const debugInfo = document.getElementById('debugInfo');
             
             try {
                 const snapshot = await db.collection('main-images').get();
@@ -249,22 +255,41 @@
                 if (!snapshot.empty) {
                     const image = snapshot.docs[0].data();
                     console.log('메인 이미지 데이터:', image);
+                    debugInfo.innerHTML = `✅ Firebase 이미지 발견: ${snapshot.size}개<br>URL: ${image.imageUrl ? '있음' : '없음'}`;
+                    debugInfo.style.background = '#4CAF50';
+                    debugInfo.style.color = 'white';
                     
                     if (img && image.imageUrl) {
                         console.log('✅ Firebase 이미지 설정:', image.imageUrl);
                         img.src = image.imageUrl;
                         img.alt = image.title || '메인 이미지';
                         section.style.display = 'block';
+                        
+                        // 이미지 로드 완료 후 디버그 정보 제거
+                        img.onload = function() {
+                            setTimeout(() => {
+                                debugInfo.style.display = 'none';
+                            }, 2000);
+                        };
+                        
                         console.log('✅ 메인 이미지 표시 완료!');
                     } else {
                         console.log('⚠️ imageUrl 없음 - 이미지 영역 숨김');
+                        debugInfo.innerHTML = '❌ imageUrl 없음';
+                        debugInfo.style.background = '#f44336';
+                        debugInfo.style.color = 'white';
                     }
                 } else {
-                    console.log('⚠️ Firebase에 메인 이미지 없음 - 이미지 영역 숨김');
-                    console.log('   관리자 페이지에서 메인 이미지를 등록하세요');
+                    console.log('⚠️ Firebase에 메인 이미지 없음');
+                    debugInfo.innerHTML = '❌ Firebase에 등록된 메인 이미지가 없습니다<br>관리자 페이지에서 메인 이미지를 등록하세요';
+                    debugInfo.style.background = '#ff9800';
+                    debugInfo.style.color = 'white';
                 }
             } catch (error) {
                 console.error('❌ 메인 이미지 로드 실패:', error.message);
+                debugInfo.innerHTML = `❌ 오류 발생: ${error.message}`;
+                debugInfo.style.background = '#f44336';
+                debugInfo.style.color = 'white';
             }
         }
 
