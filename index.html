@@ -110,9 +110,9 @@
     </header>
 
     <main>
-        <section class="main-visual">
+        <section class="main-visual" id="mainVisualSection" style="display: none;">
             <div class="main-visual" id="mainVisual">
-                <img id="mainImage" alt="메인 비주얼" style="display: none;">
+                <img id="mainImage" alt="메인 비주얼">
                 <div class="main-text">
                     <h2 id="mainTitle">프리미엄 커튼으로 특별한 공간을 만듭니다</h2>
                     <p id="mainDescription">고객님의 간에 어울리는 맞형 디자인을 제안해드립니다</p>
@@ -240,6 +240,7 @@
         async function loadMainImage() {
             console.log('=== 메인 이미지 로딩 시작 ===');
             const img = document.getElementById('mainImage');
+            const section = document.getElementById('mainVisualSection');
             
             try {
                 const snapshot = await db.collection('main-images').get();
@@ -250,21 +251,17 @@
                     console.log('메인 이미지 데이터:', image);
                     
                     if (img && image.imageUrl) {
-                        console.log('✅ Firebase 이미지로 변경:', image.imageUrl);
-                        
-                        // 이미지 로드 완료 후 표시
-                        img.onload = function() {
-                            img.style.display = 'block';
-                            console.log('✅ 이미지 표시 완료');
-                        };
-                        
+                        console.log('✅ Firebase 이미지 설정:', image.imageUrl);
                         img.src = image.imageUrl;
                         img.alt = image.title || '메인 이미지';
+                        section.style.display = 'block';
+                        console.log('✅ 메인 이미지 표시 완료!');
                     } else {
-                        console.log('⚠️ imageUrl 없음');
+                        console.log('⚠️ imageUrl 없음 - 이미지 영역 숨김');
                     }
                 } else {
-                    console.log('⚠️ Firebase에 메인 이미지 없음 - 메인 이미지 관리에서 등록하세요');
+                    console.log('⚠️ Firebase에 메인 이미지 없음 - 이미지 영역 숨김');
+                    console.log('   관리자 페이지에서 메인 이미지를 등록하세요');
                 }
             } catch (error) {
                 console.error('❌ 메인 이미지 로드 실패:', error.message);
