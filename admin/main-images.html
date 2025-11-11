@@ -3,125 +3,356 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>메인 이미지 관리 - 커튼&블라인드스토리</title>
+    <title>메인 이미지 관리 - 유명커튼블라인드</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .form-section {
+            background: #f9f9f9;
             padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background: #333;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #555;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
         }
         
         .image-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
-            margin: 20px 0;
+            margin-top: 30px;
         }
         
-        .image-item {
+        .image-card {
             border: 1px solid #ddd;
-            padding: 15px;
             border-radius: 8px;
+            overflow: hidden;
             background: white;
         }
         
-        .image-item img {
+        .image-card img {
             width: 100%;
             height: 200px;
             object-fit: cover;
-            border-radius: 4px;
         }
         
-        .image-controls {
-            margin-top: 10px;
+        .image-info {
+            padding: 15px;
+        }
+        
+        .image-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .image-actions {
             display: flex;
             gap: 10px;
         }
         
-        .btn {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .btn-delete {
-            background: #ff4444;
-            color: white;
-        }
-        
-        .btn-order {
-            background: #4CAF50;
-            color: white;
-        }
-        
-        .upload-section {
-            margin: 20px 0;
-            padding: 20px;
-            border: 2px dashed #ddd;
-            border-radius: 8px;
-            text-align: center;
-        }
-        
-        .back-btn {
+        .back-link {
+            display: inline-block;
             margin-bottom: 20px;
-            padding: 10px 20px;
-            background: #333;
+            color: #666;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            color: #333;
+        }
+        
+        .status {
+            padding: 5px 10px;
+            background: #28a745;
             color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            border-radius: 3px;
+            font-size: 12px;
+            display: inline-block;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <button onclick="location.href='dashboard.html'" class="back-btn">
-            ← 대시보드로 돌아가기
-        </button>
+        <a href="dashboard.html" class="back-link">← 대시보드로 돌아가기</a>
         
         <h1>메인 이미지 관리</h1>
         
-        <!-- 이미지 업로드 섹션 -->
-        <div class="upload-section">
-            <h3>새 이미지 추가</h3>
-            <form id="uploadForm">
-                <input type="file" id="imageUpload" accept="image/*" required>
-                <input type="text" placeholder="이미지 제목" required>
-                <input type="text" placeholder="이미지 설명" required>
-                <button type="submit" class="btn btn-order">업로드</button>
+        <div class="form-section">
+            <h2>이미지 업로드</h2>
+            <form id="imageForm">
+                <div class="form-group">
+                    <label>제목 *</label>
+                    <input type="text" id="imageTitle" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>이미지 파일 *</label>
+                    <input type="file" id="imageFile" accept="image/*" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">업로드</button>
+                <div id="uploadStatus" style="margin-top: 10px; color: #666;"></div>
             </form>
         </div>
         
-        <!-- 이미지 목록 -->
-        <div class="image-list">
-            <!-- 이미지 아이템 예시 -->
-            <div class="image-item">
-                <img src="https://images.unsplash.com/photo-1513519245088-0e12902e35ca" alt="메인 이미지 1">
-                <h4>프리미엄 커튼</h4>
-                <p>고급스러운 분위기 연출</p>
-                <div class="image-controls">
-                    <button class="btn btn-order">↑ 위로</button>
-                    <button class="btn btn-order">↓ 아래로</button>
-                    <button class="btn btn-delete">삭제</button>
-                </div>
-            </div>
-            
-            <!-- 추가 이미지 아이템들 -->
+        <h2>등록된 이미지</h2>
+        <div id="imageList" class="image-list">
+            <!-- 이미지 목록이 여기에 표시됩니다 -->
         </div>
     </div>
 
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     
-    <!-- Firebase 초기화 -->
-    <script src="../js/firebase-init.js"></script>
-    
-    <!-- 메인 이미지 관리 스크립트 -->
-    <script src="js/main-images.js"></script>
     <script>
-        const mainImageManager = new MainImageManager();
+        // 로그인 체크
+        if(!localStorage.getItem('adminLoggedIn')) {
+            alert('로그인이 필요합니다.');
+            window.location.href = 'login.html';
+        }
+
+        // Firebase 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyCM8IflmHHgMaFseEoPPsECsLxsSAjj1Vw",
+            authDomain: "curtainweb.firebaseapp.com",
+            projectId: "curtainweb",
+            storageBucket: "curtainweb.firebasestorage.app",
+            messagingSenderId: "1004027071653",
+            appId: "1:1004027071653:web:f29be419700c6302b6114c"
+        };
+
+        // Firebase 초기화
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // imgBB API 키
+        const IMGBB_API_KEY = 'fec26b54c7d067f90e5896935c9f4205';
+
+        // 이미지 리사이즈 함수
+        function resizeImage(file, maxWidth = 1920, maxHeight = 1080) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height *= maxWidth / width;
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width *= maxHeight / height;
+                                height = maxHeight;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        canvas.toBlob((blob) => {
+                            resolve(blob);
+                        }, 'image/jpeg', 0.85);
+                    };
+                    img.onerror = reject;
+                    img.src = e.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // 이미지 목록 로드
+        async function loadImages() {
+            try {
+                const snapshot = await db.collection('main-images').get();
+                const imageList = document.getElementById('imageList');
+                imageList.innerHTML = '';
+
+                if (snapshot.empty) {
+                    imageList.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999;">등록된 이미지가 없습니다.</p>';
+                    return;
+                }
+
+                snapshot.forEach(doc => {
+                    const image = doc.data();
+                    const card = document.createElement('div');
+                    card.className = 'image-card';
+                    card.innerHTML = `
+                        <img src="${image.imageUrl}" alt="${image.title}">
+                        <div class="image-info">
+                            <div class="image-title">${image.title}</div>
+                            <div class="image-actions">
+                                <button class="btn btn-danger" onclick="deleteImage('${doc.id}')">삭제</button>
+                            </div>
+                        </div>
+                    `;
+                    imageList.appendChild(card);
+                });
+            } catch (error) {
+                console.error('이미지 로드 실패:', error);
+                alert('이미지를 불러오는데 실패했습니다: ' + error.message);
+            }
+        }
+
+        // 이미지 업로드
+        document.getElementById('imageForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('imageTitle').value;
+            const imageFile = document.getElementById('imageFile').files[0];
+            const statusDiv = document.getElementById('uploadStatus');
+
+            if (!imageFile) {
+                alert('이미지 파일을 선택해주세요.');
+                return;
+            }
+
+            try {
+                statusDiv.textContent = '이미지 최적화 중...';
+                
+                // 이미지 리사이즈
+                const resizedBlob = await resizeImage(imageFile);
+                
+                statusDiv.textContent = 'imgBB에 업로드 중...';
+                
+                // imgBB에 업로드
+                const formData = new FormData();
+                formData.append('image', resizedBlob);
+
+                const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    statusDiv.textContent = 'Firestore에 저장 중...';
+                    
+                    // Firestore에 저장
+                    await db.collection('main-images').add({
+                        title: title,
+                        imageUrl: result.data.url,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    statusDiv.textContent = '✅ 업로드 완료!';
+                    statusDiv.style.color = '#28a745';
+                    
+                    alert('이미지가 등록되었습니다!');
+                    document.getElementById('imageForm').reset();
+                    loadImages();
+                    
+                    setTimeout(() => {
+                        statusDiv.textContent = '';
+                        statusDiv.style.color = '#666';
+                    }, 3000);
+                } else {
+                    throw new Error('imgBB 업로드 실패');
+                }
+            } catch (error) {
+                console.error('업로드 실패:', error);
+                statusDiv.textContent = '❌ 업로드 실패';
+                statusDiv.style.color = '#dc3545';
+                alert('업로드에 실패했습니다: ' + error.message);
+            }
+        });
+
+        // 이미지 삭제
+        async function deleteImage(id) {
+            if (confirm('정말 이 이미지를 삭제하시겠습니까?')) {
+                try {
+                    await db.collection('main-images').doc(id).delete();
+                    alert('이미지가 삭제되었습니다.');
+                    loadImages();
+                } catch (error) {
+                    console.error('삭제 실패:', error);
+                    alert('삭제에 실패했습니다: ' + error.message);
+                }
+            }
+        }
+
+        // 페이지 로드 시 이미지 목록 표시
+        loadImages();
     </script>
 </body>
-</html> 
+</html>
