@@ -227,6 +227,26 @@
                     <input type="tel" name="phone" placeholder="연락처" required>
                     <input type="text" name="address" placeholder="주소" required>
                     <textarea name="message" placeholder="문의사항을 입력해주세요" required></textarea>
+                    
+                    <!-- 개인정보 수집 및 이용 동의 -->
+                    <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-radius: 8px; border: 1px solid #e0e0e0; text-align: left;">
+                        <details style="cursor: pointer;">
+                            <summary style="font-weight: 600; color: #333; margin-bottom: 10px; font-size: 0.95rem;">
+                                📋 개인정보 수집 및 이용 동의 (펼쳐서 확인)
+                            </summary>
+                            <div style="background: white; padding: 12px; border-radius: 5px; font-size: 0.85rem; line-height: 1.6; color: #555; margin-top: 10px;">
+                                <p><strong>1. 수집 항목:</strong> 이름, 연락처, 주소, 문의내용</p>
+                                <p><strong>2. 이용 목적:</strong> 견적 상담 및 서비스 제공</p>
+                                <p><strong>3. 보유 기간:</strong> 상담 완료 후 3년</p>
+                                <p><strong>4. 거부권:</strong> 동의 거부 시 상담 서비스 이용이 제한됩니다.</p>
+                            </div>
+                        </details>
+                        <label style="display: flex; align-items: center; margin-top: 12px; cursor: pointer; font-size: 0.95rem;">
+                            <input type="checkbox" id="mainPrivacyAgree" required style="width: 18px; height: 18px; margin-right: 8px; cursor: pointer;">
+                            <span>개인정보 수집 및 이용에 동의합니다. <span style="color: #e74c3c;">*</span></span>
+                        </label>
+                    </div>
+                    
                     <button type="submit">신청하기</button>
                 </form>
             </div>
@@ -505,6 +525,14 @@
             const form = e.target;
             const formData = new FormData(form);
             
+            // 개인정보 동의 체크 확인
+            const privacyAgree = document.getElementById('mainPrivacyAgree');
+            if (!privacyAgree || !privacyAgree.checked) {
+                alert('개인정보 수집 및 이용에 동의해주세요.');
+                if (privacyAgree) privacyAgree.focus();
+                return;
+            }
+            
             const name = formData.get('name');
             const phone = formData.get('phone');
             const address = formData.get('address');
@@ -560,8 +588,11 @@
                     userAgent: navigator.userAgent.substring(0, 200)
                 });
                 
-                alert('문의가 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.');
+                alert('✅ 문의가 접수되었습니다!\n빠른 시일 내에 연락드리겠습니다.');
                 form.reset();
+                // 개인정보 동의 체크박스도 초기화
+                const privacyAgree = document.getElementById('mainPrivacyAgree');
+                if (privacyAgree) privacyAgree.checked = false;
             } catch (error) {
                 console.error('문의 접수 실패:', error);
                 alert('문의 접수에 실패했습니다. 다시 시도해주세요.');
