@@ -278,6 +278,7 @@
                 z-index: 999;">
     </div>
 
+    <script src="js/security.js"></script>
     <script src="js/main.js"></script>
     <script>
         function showAdminLogin() {
@@ -496,19 +497,59 @@
             const form = e.target;
             const formData = new FormData(form);
             
+            const name = formData.get('name');
+            const phone = formData.get('phone');
+            const address = formData.get('address');
+            const message = formData.get('message');
+            
+            // 보안 검증
+            if (!window.SecurityUtils) {
+                alert('보안 모듈 로드 실패. 페이지를 새로고침해주세요.');
+                return;
+            }
+            
+            // Rate Limiting (1분에 3회까지)
+            if (!window.SecurityUtils.rateLimiter.check('contact_form', 3, 60000)) {
+                alert('너무 많은 요청입니다. 잠시 후 다시 시도해주세요.');
+                return;
+            }
+            
+            // 입력값 검증
+            if (!window.SecurityUtils.validateInput(name, 50)) {
+                alert('이름을 올바르게 입력해주세요.');
+                return;
+            }
+            
+            if (!window.SecurityUtils.validatePhone(phone)) {
+                alert('전화번호를 올바르게 입력해주세요.');
+                return;
+            }
+            
+            if (!window.SecurityUtils.validateInput(address, 200)) {
+                alert('주소를 올바르게 입력해주세요.');
+                return;
+            }
+            
+            if (!window.SecurityUtils.validateInput(message, 1000)) {
+                alert('문의 내용을 올바르게 입력해주세요. (최대 1000자)');
+                return;
+            }
+            
             // 버튼 비활성화
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
             submitBtn.textContent = '전송 중...';
             
             try {
-                // Firebase에 저장
+                // Firebase에 저장 (XSS 방어를 위해 이스케이프)
                 await db.collection('inquiries').add({
-                    name: formData.get('name'),
-                    phone: formData.get('phone'),
-                    address: formData.get('address'),
-                    message: formData.get('message'),
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    name: window.SecurityUtils.safeDisplay(name),
+                    phone: window.SecurityUtils.safeDisplay(phone),
+                    address: window.SecurityUtils.safeDisplay(address),
+                    message: window.SecurityUtils.safeDisplay(message),
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    ip: 'client', // 클라이언트 측에서는 실제 IP 가져오기 어려움
+                    userAgent: navigator.userAgent.substring(0, 200)
                 });
                 
                 alert('문의가 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.');
