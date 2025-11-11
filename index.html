@@ -201,29 +201,48 @@
     <script src="js/main.js"></script>
     <script>
         function showAdminLogin() {
-            document.getElementById('adminModal').style.display = 'block';
-            document.getElementById('modalOverlay').style.display = 'block';
+            const modal = document.getElementById('adminModal');
+            const overlay = document.getElementById('modalOverlay');
+            if (modal && overlay) {
+                modal.style.display = 'block';
+                overlay.style.display = 'block';
+            }
         }
 
         function closeAdminModal() {
-            document.getElementById('adminModal').style.display = 'none';
-            document.getElementById('modalOverlay').style.display = 'none';
+            const modal = document.getElementById('adminModal');
+            const overlay = document.getElementById('modalOverlay');
+            if (modal && overlay) {
+                modal.style.display = 'none';
+                overlay.style.display = 'none';
+            }
         }
 
-        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const id = document.getElementById('adminId').value;
-            const pw = document.getElementById('adminPw').value;
+        // 페이지 로드 완료 후 이벤트 리스너 등록
+        window.addEventListener('DOMContentLoaded', function() {
+            // 관리자 로그인 폼
+            const adminLoginForm = document.getElementById('adminLoginForm');
+            if (adminLoginForm) {
+                adminLoginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const id = document.getElementById('adminId').value;
+                    const pw = document.getElementById('adminPw').value;
 
-            if(id === 'admin' && pw === '1234') {
-                alert('관리자 로그인 성공!');
-                window.location.href = 'admin/dashboard.html';
-            } else {
-                alert('아이디 또는 비밀번호가 잘못되었습니다.');
+                    if(id === 'admin' && pw === '1234') {
+                        alert('관리자 로그인 성공!');
+                        window.location.href = 'admin/dashboard.html';
+                    } else {
+                        alert('아이디 또는 비밀번호가 잘못되었습니다.');
+                    }
+                });
+            }
+
+            // 모달 오버레이 클릭 시 닫기
+            const modalOverlay = document.getElementById('modalOverlay');
+            if (modalOverlay) {
+                modalOverlay.addEventListener('click', closeAdminModal);
             }
         });
-
-        document.getElementById('modalOverlay').addEventListener('click', closeAdminModal);
 
         // 메인 이미지 로드
         async function loadMainImage() {
@@ -327,9 +346,16 @@
             loadMainImage();
             loadProducts();
             loadTexts();
+
+            // 상담 폼 이벤트 리스너
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', handleContactSubmit);
+            }
         });
 
-        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+        // 상담 폼 제출 핸들러
+        async function handleContactSubmit(e) {
             e.preventDefault();
             const form = e.target;
             const formData = new FormData(form);
@@ -359,7 +385,7 @@
                 submitBtn.disabled = false;
                 submitBtn.textContent = '신청하기';
             }
-        });
+        }
     </script>
 
     <div class="floating-call">
