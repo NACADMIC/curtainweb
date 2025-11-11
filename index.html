@@ -113,10 +113,10 @@
     <main>
         <section class="main-visual">
             <div class="main-visual">
-                <img src="https://images.pexels.com/photos/1082355/pexels-photo-1082355.jpeg" alt="메인 비주얼">
+                <img id="mainImage" style="display: none;" alt="메인 비주얼">
                 <div class="main-text">
-                    <h2>프리미엄 커튼으로 특별한 공간을 만듭니다</h2>
-                    <p>고객님의 간에 어울리는 맞형 디자인을 제안해드립니다</p>
+                    <h2 id="mainTitle">프리미엄 커튼으로 특별한 공간을 만듭니다</h2>
+                    <p id="mainSubtitle">고객님의 공간에 어울리는 맞춤형 디자인을 제안해드립니다</p>
                 </div>
             </div>
         </section>
@@ -124,25 +124,8 @@
         <section id="products" class="products">
             <div class="container">
                 <h3 class="section-title">인기 제품</h3>
-                <div class="product-grid">
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1505692952047-1a78307da8f2" alt="프리미엄 린넨커튼">
-                        <h4>프리미엄 린넨커튼</h4>
-                        <p>100% 내추럴 린넨 원단</p>
-                        <button class="product-btn" onclick="location.href='pages/curtains.html'">상세보기</button>
-                    </div>
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1513519245088-0e12902e35ca" alt="블랙아웃 커튼">
-                        <h4>차광 블랙아웃</h4>
-                        <p>99.9% 빛차단 특수원단</p>
-                        <button class="product-btn" onclick="location.href='pages/curtains.html'">상세보기</button>
-                    </div>
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457" alt="쉬어커튼">
-                        <h4>쉬어커튼</h4>
-                        <p>은은한 채광 효</p>
-                        <button class="product-btn" onclick="location.href='pages/curtains.html'">상세보기</button>
-                    </div>
+                <div class="product-grid" id="productGrid">
+                    <p style="text-align: center; color: #999;">제품을 불러오는 중...</p>
                 </div>
             </div>
         </section>
@@ -251,6 +234,110 @@
 
         document.getElementById('modalOverlay').addEventListener('click', closeAdminModal);
 
+        // 메인 이미지 로드
+        async function loadMainImage() {
+            console.log('🔍 메인 이미지 로드 시작');
+            try {
+                const snapshot = await db.collection('main-images').limit(1).get();
+                console.log('📸 이미지 개수:', snapshot.size);
+                
+                if (!snapshot.empty) {
+                    const imageData = snapshot.docs[0].data();
+                    const imgElement = document.getElementById('mainImage');
+                    
+                    console.log('✅ 이미지 URL:', imageData.imageUrl);
+                    
+                    imgElement.src = imageData.imageUrl;
+                    imgElement.style.display = 'block';
+                } else {
+                    console.log('❌ 등록된 이미지 없음');
+                }
+            } catch (error) {
+                console.error('❌ 메인 이미지 로드 실패:', error);
+            }
+        }
+
+        // 인기 제품 로드
+        async function loadProducts() {
+            console.log('🔍 제품 로드 시작');
+            try {
+                const snapshot = await db.collection('products')
+                    .where('isPopular', '==', true)
+                    .limit(3)
+                    .get();
+                
+                console.log('🛍️ 인기 제품 개수:', snapshot.size);
+                
+                const productGrid = document.getElementById('productGrid');
+                
+                if (snapshot.empty) {
+                    // 인기 제품이 없으면 일반 제품 3개 가져오기
+                    const allProducts = await db.collection('products').limit(3).get();
+                    
+                    if (allProducts.empty) {
+                        productGrid.innerHTML = '<p style="text-align: center; color: #999;">등록된 제품이 없습니다.</p>';
+                        return;
+                    }
+                    
+                    productGrid.innerHTML = '';
+                    allProducts.forEach(doc => {
+                        const product = doc.data();
+                        addProductCard(product, doc.id);
+                    });
+                } else {
+                    productGrid.innerHTML = '';
+                    snapshot.forEach(doc => {
+                        const product = doc.data();
+                        addProductCard(product, doc.id);
+                    });
+                }
+            } catch (error) {
+                console.error('❌ 제품 로드 실패:', error);
+                document.getElementById('productGrid').innerHTML = 
+                    '<p style="text-align: center; color: #999;">제품을 불러오는데 실패했습니다.</p>';
+            }
+        }
+
+        // 제품 카드 추가
+        function addProductCard(product, id) {
+            const productGrid = document.getElementById('productGrid');
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+                <img src="${product.imageUrl || 'https://via.placeholder.com/300x200'}" alt="${product.name}">
+                <h4>${product.name}</h4>
+                <p>${product.description || ''}</p>
+                <button class="product-btn" onclick="location.href='pages/product-detail.html?id=${id}'">상세보기</button>
+            `;
+            productGrid.appendChild(card);
+        }
+
+        // 텍스트 로드
+        async function loadTexts() {
+            try {
+                const doc = await db.collection('site-texts').doc('main').get();
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.mainTitle) {
+                        document.getElementById('mainTitle').textContent = data.mainTitle;
+                    }
+                    if (data.mainSubtitle) {
+                        document.getElementById('mainSubtitle').textContent = data.mainSubtitle;
+                    }
+                }
+            } catch (error) {
+                console.error('텍스트 로드 실패:', error);
+            }
+        }
+
+        // 페이지 로드 시 실행
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('=== 페이지 로드 완료 ===');
+            loadMainImage();
+            loadProducts();
+            loadTexts();
+        });
+
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const form = e.target;
@@ -262,21 +349,8 @@
             submitBtn.textContent = '전송 중...';
             
             try {
-                // EmailJS로 이메일 전송
-                await emailjs.send(
-                    'YOUR_SERVICE_ID',      // EmailJS 서비스 ID
-                    'YOUR_TEMPLATE_ID',     // EmailJS 템플릿 ID
-                    {
-                        to_email: 'okyoucandoit@hanmail.net',
-                        from_name: formData.get('name'),
-                        phone: formData.get('phone'),
-                        address: formData.get('address'),
-                        message: formData.get('message')
-                    }
-                );
-                
-                // Firebase에도 저장 (선택사항)
-                await firebase.firestore().collection('inquiries').add({
+                // Firebase에 저장
+                await db.collection('inquiries').add({
                     name: formData.get('name'),
                     phone: formData.get('phone'),
                     address: formData.get('address'),
