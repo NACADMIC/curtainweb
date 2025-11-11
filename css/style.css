@@ -232,6 +232,24 @@ body {
     
     .product-slider .product-card img {
         height: 150px;
+        object-fit: cover;
+    }
+    
+    /* 제품 그리드 모바일 */
+    .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    
+    /* 메인 비주얼 모바일 */
+    main {
+        padding-top: 60px;
+    }
+    
+    /* 이미지 최적화 */
+    img {
+        max-width: 100%;
+        height: auto;
     }
 }
 
@@ -261,6 +279,20 @@ body {
         width: 30px;
         height: 30px;
         font-size: 16px;
+    }
+    
+    .product-slider .product-card {
+        min-width: 150px;
+        max-width: 150px;
+    }
+    
+    .product-slider .product-card img {
+        height: 120px;
+    }
+    
+    .product-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
     }
 }
 
