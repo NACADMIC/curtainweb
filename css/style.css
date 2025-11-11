@@ -201,6 +201,30 @@ body {
     }
     
     /* 메인 비주얼 */
+    .main-visual {
+        height: 60vh;
+        margin-bottom: 20px;
+    }
+    
+    .main-visual img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block !important;
+    }
+    
+    .main-text {
+        padding: 20px;
+    }
+    
+    .main-text h2 {
+        font-size: 1.5rem;
+    }
+    
+    .main-text p {
+        font-size: 0.9rem;
+    }
+    
     .slide-content h2 {
         font-size: 2.5rem;
     }
@@ -269,6 +293,19 @@ body {
     
     .nav-menu li a {
         font-size: 0.75rem;
+    }
+    
+    /* 메인 이미지 */
+    .main-visual {
+        height: 50vh;
+    }
+    
+    .main-text h2 {
+        font-size: 1.2rem;
+    }
+    
+    .main-text p {
+        font-size: 0.8rem;
     }
     
     .product-slider-wrapper {
