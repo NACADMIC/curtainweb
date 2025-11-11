@@ -77,7 +77,23 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="js/firebase-config.js"></script>
+    <script>
+        // Firebase 설정 및 초기화
+        const firebaseConfig = {
+            apiKey: "AIzaSyCM8IflmHHgMaFseEoPPsECsLxsSAjj1Vw",
+            authDomain: "curtainweb.firebaseapp.com",
+            projectId: "curtainweb",
+            storageBucket: "curtainweb.firebasestorage.app",
+            messagingSenderId: "1004027071653",
+            appId: "1:1004027071653:web:f29be419700c6302b6114c"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        
+        console.log('✅ Firebase 초기화 완료');
+    </script>
 
     <header class="header">
         <div class="container">
