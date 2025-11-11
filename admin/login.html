@@ -111,11 +111,10 @@
                 // Firebase Authentication 로그인
                 await auth.signInWithEmailAndPassword(email, password);
                 localStorage.setItem('adminLoggedIn', 'true');
-                alert('로그인 성공!');
                 window.location.href = 'dashboard.html';
             } catch (error) {
                 console.error('로그인 오류:', error);
-                alert('로그인 실패: ' + error.message + '\n\nFirebase에서 사용자를 추가하셨나요?');
+                alert('로그인 실패: ' + error.message);
             }
         });
     </script>
