@@ -2,80 +2,55 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>제품관리 - 유명커튼블라인드</title>
-    <link rel="stylesheet" href="../css/admin.css">
+    <title>제품 등록 테스트</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .form-group { margin: 15px 0; }
+        label { display: block; margin-bottom: 5px; }
+        input, select, textarea { width: 300px; padding: 8px; }
+        button { padding: 10px 20px; background: #333; color: white; border: none; cursor: pointer; }
+        #productList { margin-top: 30px; }
+        .product-item { padding: 10px; border: 1px solid #ddd; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>제품 등록 테스트</h1>
     
+    <form id="productForm">
+        <div class="form-group">
+            <label>제품명</label>
+            <input type="text" name="name" required>
+        </div>
+        <div class="form-group">
+            <label>카테고리</label>
+            <select name="category" required>
+                <option value="curtain">커튼</option>
+                <option value="blind">블라인드</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>가격</label>
+            <input type="number" name="price" required>
+        </div>
+        <div class="form-group">
+            <label>이미지 (선택)</label>
+            <input type="file" name="image" accept="image/*">
+        </div>
+        <div class="form-group">
+            <label>설명</label>
+            <textarea name="description" rows="4"></textarea>
+        </div>
+        <button type="submit">제품 등록</button>
+    </form>
+
+    <div id="productList">
+        <h2>등록된 제품</h2>
+        <div id="products"></div>
+    </div>
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-</head>
-<body class="admin-products">
-    <nav class="admin-nav">
-        <!-- 동일한 네비게이션 -->
-    </nav>
-
-    <main class="admin-main">
-        <div class="content-header">
-            <h2>제품관리</h2>
-            <button id="addProductBtn" class="primary-btn">새 제품 등록</button>
-        </div>
-
-        <div class="product-list">
-            <table>
-                <thead>
-                    <tr>
-                        <th>이미지</th>
-                        <th>제품명</th>
-                        <th>카테고리</th>
-                        <th>가격</th>
-                        <th>상태</th>
-                        <th>관리</th>
-                    </tr>
-                </thead>
-                <tbody id="productList">
-                    <!-- JS로 동적 추가 -->
-                </tbody>
-            </table>
-        </div>
-
-        <!-- 제품 등록/수정 모달 -->
-        <div id="productModal" class="modal">
-            <div class="modal-content">
-                <h3>제품 등록/수정</h3>
-                <form id="productForm">
-                    <div class="form-group">
-                        <label>제품명</label>
-                        <input type="text" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>카테고리</label>
-                        <select name="category" required>
-                            <option value="curtain">커튼</option>
-                            <option value="blind">블라인드</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>가격</label>
-                        <input type="number" name="price" required>
-                    </div>
-                    <div class="form-group">
-                        <label>이미지 (선택사항)</label>
-                        <input type="file" name="image" accept="image/*">
-                    </div>
-                    <div class="form-group">
-                        <label>설명</label>
-                        <textarea name="description"></textarea>
-                    </div>
-                    <div class="button-group">
-                        <button type="submit" class="primary-btn">저장</button>
-                        <button type="button" class="cancel-btn" onclick="closeModal()">취소</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </main>
     
     <script>
         // Firebase 설정
@@ -92,77 +67,69 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         
-        // 로그인 체크
-        if(!localStorage.getItem('adminLoggedIn')) {
-            alert('로그인이 필요합니다.');
-            window.location.href = 'login.html';
-        }
-
-        let currentEditId = null;
+        const IMGBB_API_KEY = 'fec26b54c7d067f90e5896935c9f4205';
 
         // 제품 목록 로드
         async function loadProducts() {
+            console.log('제품 목록 로드 시작...');
             try {
-                const snapshot = await db.collection('products').orderBy('createdAt', 'desc').get();
-                const tbody = document.getElementById('productList');
-                tbody.innerHTML = '';
+                const snapshot = await db.collection('products').get();
+                const productsDiv = document.getElementById('products');
+                productsDiv.innerHTML = '';
                 
                 if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">등록된 제품이 없습니다.</td></tr>';
+                    productsDiv.innerHTML = '<p>등록된 제품이 없습니다.</p>';
                     return;
                 }
                 
                 snapshot.forEach(doc => {
                     const product = doc.data();
-                    const imageHtml = product.imageUrl 
-                        ? `<img src="${product.imageUrl}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover;">`
-                        : '<span style="color: #999;">이미지 없음</span>';
-                    
-                    const row = `
-                        <tr>
-                            <td>${imageHtml}</td>
-                            <td>${product.name}</td>
-                            <td>${product.category === 'curtain' ? '커튼' : '블라인드'}</td>
-                            <td>${product.price ? product.price.toLocaleString() + '원' : '-'}</td>
-                            <td>판매중</td>
-                            <td>
-                                <button onclick="editProduct('${doc.id}')">수정</button>
-                                <button onclick="deleteProduct('${doc.id}')">삭제</button>
-                            </td>
-                        </tr>
+                    const div = document.createElement('div');
+                    div.className = 'product-item';
+                    div.innerHTML = `
+                        <strong>${product.name}</strong> - ${product.price}원
+                        <br>카테고리: ${product.category}
+                        ${product.imageUrl ? '<br>이미지: ✓' : ''}
+                        <button onclick="deleteProduct('${doc.id}')">삭제</button>
                     `;
-                    tbody.innerHTML += row;
+                    productsDiv.appendChild(div);
                 });
+                
+                console.log('제품 목록 로드 완료:', snapshot.size + '개');
             } catch (error) {
                 console.error('제품 로드 실패:', error);
                 alert('제품을 불러오는데 실패했습니다: ' + error.message);
             }
         }
 
-        // imgBB API 키 (https://api.imgbb.com/ 에서 발급)
-        const IMGBB_API_KEY = 'fec26b54c7d067f90e5896935c9f4205';
+        // 제품 삭제
+        async function deleteProduct(id) {
+            if (!confirm('삭제하시겠습니까?')) return;
+            
+            try {
+                await db.collection('products').doc(id).delete();
+                alert('삭제되었습니다.');
+                loadProducts();
+            } catch (error) {
+                console.error('삭제 실패:', error);
+                alert('삭제 실패: ' + error.message);
+            }
+        }
 
-        // 제품 추가/수정
+        // 제품 등록
         document.getElementById('productForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            console.log('=== 제품 등록 시작 ===');
             
             const formData = new FormData(e.target);
             const imageFile = formData.get('image');
             
-            console.log('제품 저장 시작...');
-            console.log('이미지 파일:', imageFile);
-            
             try {
                 let imageUrl = '';
                 
-                // imgBB로 이미지 업로드
+                // 이미지 업로드
                 if (imageFile && imageFile.size > 0) {
-                    console.log('이미지 업로드 시작...');
-                    
-                    if (IMGBB_API_KEY === 'YOUR_IMGBB_API_KEY') {
-                        alert('imgBB API 키를 설정해주세요. (FIREBASE_설정가이드.md 참고)');
-                        return;
-                    }
+                    console.log('이미지 업로드 중...');
                     
                     const imgData = new FormData();
                     imgData.append('image', imageFile);
@@ -173,102 +140,47 @@
                     });
                     
                     const result = await response.json();
-                    console.log('imgBB 응답:', result);
                     
                     if (result.success) {
                         imageUrl = result.data.url;
-                        console.log('이미지 URL:', imageUrl);
+                        console.log('이미지 업로드 성공:', imageUrl);
                     } else {
-                        throw new Error('이미지 업로드 실패: ' + JSON.stringify(result));
+                        console.error('이미지 업로드 실패:', result);
                     }
                 } else {
-                    console.log('이미지 없음, 기본 이미지 사용');
+                    console.log('이미지 없음');
                 }
                 
+                // Firestore에 저장
                 const productData = {
                     name: formData.get('name'),
                     category: formData.get('category'),
                     price: Number(formData.get('price')),
-                    description: formData.get('description'),
-                    imageUrl: imageUrl
+                    description: formData.get('description') || '',
+                    imageUrl: imageUrl,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
                 
-                console.log('제품 데이터:', productData);
+                console.log('Firestore 저장 중:', productData);
                 
-                if (currentEditId) {
-                    // 수정
-                    console.log('제품 수정 시작...');
-                    productData.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
-                    await db.collection('products').doc(currentEditId).update(productData);
-                    console.log('제품 수정 완료!');
-                    alert('제품이 수정되었습니다.');
-                } else {
-                    // 추가
-                    console.log('제품 추가 시작...');
-                    productData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                    const docRef = await db.collection('products').add(productData);
-                    console.log('제품 추가 완료! ID:', docRef.id);
-                    alert('제품이 등록되었습니다.');
-                }
+                const docRef = await db.collection('products').add(productData);
                 
-                closeModal();
-                console.log('제품 목록 새로고침...');
+                console.log('저장 완료! ID:', docRef.id);
+                alert('제품이 등록되었습니다!');
+                
+                e.target.reset();
                 loadProducts();
+                
             } catch (error) {
-                console.error('제품 저장 실패:', error);
-                alert('제품 저장에 실패했습니다: ' + error.message);
+                console.error('오류 발생:', error);
+                alert('등록 실패: ' + error.message);
             }
         });
 
-        // 제품 수정
-        async function editProduct(id) {
-            try {
-                const doc = await db.collection('products').doc(id).get();
-                const product = doc.data();
-                
-                document.querySelector('[name="name"]').value = product.name;
-                document.querySelector('[name="category"]').value = product.category;
-                document.querySelector('[name="price"]').value = product.price;
-                document.querySelector('[name="description"]').value = product.description || '';
-                
-                currentEditId = id;
-                document.getElementById('productModal').style.display = 'block';
-            } catch (error) {
-                console.error('제품 로드 실패:', error);
-                alert('제품 정보를 불러오는데 실패했습니다.');
-            }
-        }
-
-        // 제품 삭제
-        async function deleteProduct(id) {
-            if (!confirm('정말 삭제하시겠습니까?')) return;
-            
-            try {
-                await db.collection('products').doc(id).delete();
-                alert('제품이 삭제되었습니다.');
-                loadProducts();
-            } catch (error) {
-                console.error('제품 삭제 실패:', error);
-                alert('제품 삭제에 실패했습니다.');
-            }
-        }
-
-        // 모달 열기
-        document.getElementById('addProductBtn').addEventListener('click', function() {
-            currentEditId = null;
-            document.getElementById('productForm').reset();
-            document.getElementById('productModal').style.display = 'block';
-        });
-
-        // 모달 닫기
-        function closeModal() {
-            document.getElementById('productModal').style.display = 'none';
-            document.getElementById('productForm').reset();
-            currentEditId = null;
-        }
-
-        // 페이지 로드 시 제품 목록 로드
+        // 페이지 로드 시
         loadProducts();
+        console.log('Firebase 연결 상태 - db:', typeof db);
     </script>
 </body>
-</html> 
+</html>
+
