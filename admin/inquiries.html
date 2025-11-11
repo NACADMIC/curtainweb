@@ -3,12 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>문의사항 관리 - 유명커튼블라인드</title>
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    
+    <title>문의사항 관리 - 커튼&블라인드스토리</title>
     <style>
         * { box-sizing: border-box; }
         
@@ -197,68 +192,26 @@
     </div>
 
     <script>
-        // Firebase 설정
-        const firebaseConfig = {
-            apiKey: "AIzaSyCM8IflmHHgMaFseEoPPsECsLxsSAjj1Vw",
-            authDomain: "curtainweb.firebaseapp.com",
-            projectId: "curtainweb",
-            storageBucket: "curtainweb.firebasestorage.app",
-            messagingSenderId: "1004027071653",
-            appId: "1:1004027071653:web:f29be419700c6302b6114c"
-        };
-        
-        // Firebase 초기화
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        
-        // 로그인 체크
-        if(!localStorage.getItem('adminLoggedIn')) {
-            alert('로그인이 필요합니다.');
-            window.location.href = 'login.html';
-        }
-
-        function toggleInquiry(element, event) {
-            if(event) event.stopPropagation();
+        function toggleInquiry(element) {
             const content = element.querySelector('.inquiry-content');
             content.style.display = content.style.display === 'block' ? 'none' : 'block';
             
             if(element.classList.contains('unread')) {
                 element.classList.remove('unread');
-                const statusElement = element.querySelector('.inquiry-status');
-                statusElement.className = 'inquiry-status status-read';
-                statusElement.textContent = '확인완료';
-                
-                // Firebase에 읽음 상태 업데이트
-                const inquiryId = element.getAttribute('data-id');
-                if(inquiryId) {
-                    db.collection('inquiries').doc(inquiryId).update({
-                        read: true,
-                        readAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                }
+                element.querySelector('.status-new').className = 'inquiry-status status-read';
+                element.querySelector('.status-read').textContent = '확인완료';
             }
         }
         
-        async function sendReply(btn, event, inquiryId) {
+        function sendReply(btn, event) {
             event.stopPropagation();
             const replyText = btn.previousElementSibling.value;
             if(replyText.trim() === '') {
                 alert('답변 내용을 입력해주세요.');
                 return;
             }
-            
-            try {
-                await db.collection('inquiries').doc(inquiryId).update({
-                    reply: replyText,
-                    repliedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    read: true
-                });
-                alert('답변이 저장되었습니다.');
-                btn.parentElement.innerHTML = `<p><strong>답변완료:</strong> ${replyText}</p>`;
-            } catch (error) {
-                console.error('답변 저장 실패:', error);
-                alert('답변 저장에 실패했습니다.');
-            }
+            alert('답변이 전송되었습니다.');
+            btn.parentElement.innerHTML = `<p><strong>답변완료:</strong> ${replyText}</p>`;
         }
         
         function filterInquiries(type) {
@@ -281,57 +234,30 @@
             });
         }
 
+        const db = firebase.firestore();
+
         async function loadInquiries() {
             try {
                 const snapshot = await db.collection('inquiries').orderBy('createdAt', 'desc').get();
                 const inquiriesList = document.querySelector('.inquiry-list');
                 inquiriesList.innerHTML = '';
 
-                if(snapshot.empty) {
-                    inquiriesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #888;">문의사항이 없습니다.</p>';
-                    return;
-                }
-
                 snapshot.forEach(doc => {
                     const inquiry = doc.data();
-                    const date = inquiry.createdAt ? inquiry.createdAt.toDate().toLocaleString('ko-KR') : '날짜 정보 없음';
-                    const isRead = inquiry.read || false;
-                    
-                    const replySection = inquiry.reply 
-                        ? `<p><strong>답변완료:</strong> ${inquiry.reply}</p>`
-                        : `<textarea placeholder="답변을 입력하세요..." rows="4"></textarea>
-                           <button class="reply-btn" onclick="sendReply(this, event, '${doc.id}')">답변하기</button>`;
-                    
                     inquiriesList.innerHTML += `
-                        <div class="inquiry-item ${!isRead ? 'unread' : ''}" data-id="${doc.id}" onclick="toggleInquiry(this, event)">
-                            <div class="inquiry-header">
-                                <div>
-                                    <strong>${inquiry.name || '이름 없음'}</strong>
-                                    <span class="inquiry-status ${!isRead ? 'status-new' : 'status-read'}">${!isRead ? 'NEW' : '확인완료'}</span>
-                                </div>
-                                <span class="inquiry-date">${date}</span>
-                            </div>
-                            <div>${inquiry.message ? inquiry.message.substring(0, 50) + '...' : '내용 없음'}</div>
-                            <div class="inquiry-content">
-                                <p><strong>연락처:</strong> ${inquiry.phone || '-'}</p>
-                                <p><strong>주소:</strong> ${inquiry.address || '-'}</p>
-                                <p><strong>문의내용:</strong><br>${inquiry.message || '-'}</p>
-                                
-                                <div class="reply-form">
-                                    ${replySection}
-                                </div>
-                            </div>
+                        <div class="inquiry-item">
+                            <h4>${inquiry.name}</h4>
+                            <p>${inquiry.message}</p>
+                            <p>연락처: ${inquiry.phone}</p>
+                            <p>등록일: ${inquiry.createdAt.toDate().toLocaleDateString()}</p>
                         </div>
                     `;
                 });
             } catch (error) {
                 console.error('문의사항 로딩 실패:', error);
-                document.querySelector('.inquiry-list').innerHTML = 
-                    '<p style="padding: 20px; text-align: center; color: #f44336;">문의사항을 불러오는데 실패했습니다.</p>';
             }
         }
 
-        // 페이지 로드 시 문의사항 로드
         loadInquiries();
     </script>
 </body>

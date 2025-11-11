@@ -75,24 +75,26 @@
 </head>
 <body>
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+
     <script>
-        // Firebase 설정 및 초기화
-        const firebaseConfig = {
-            apiKey: "AIzaSyCM8IflmHHgMaFseEoPPsECsLxsSAjj1Vw",
-            authDomain: "curtainweb.firebaseapp.com",
-            projectId: "curtainweb",
-            storageBucket: "curtainweb.firebasestorage.app",
-            messagingSenderId: "1004027071653",
-            appId: "1:1004027071653:web:f29be419700c6302b6114c"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-        
-        console.log('✅ Firebase 초기화 완료');
+    const firebaseConfig = {
+    apiKey: "AIzaSyAFfU5MOxvIh9RKrQQ51cuzDZnCB-97GiQ",
+    authDomain: "curtainweb-7fc08.firebaseapp.com",
+    projectId: "curtainweb-7fc08",
+    storageBucket: "curtainweb-7fc08.firebasestorage.app",
+    messagingSenderId: "866400998037",
+    appId: "1:866400998037:web:4350252c7e8cf6e6f2819c",
+    measurementId: "G-PVBBZ3SV9W"
+  };
+
+    // Firebase 초기화
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    console.log('✅ Firebase 초기화 완료');
     </script>
 
     <header class="header">
@@ -110,26 +112,37 @@
     </header>
 
     <main>
-        <!-- 디버그 정보 (테스트용) -->
-        <div id="debugInfo" style="background: #ffeb3b; padding: 20px; text-align: center; font-weight: bold; font-size: 18px; border: 3px solid red;">
-            메인 이미지 로딩 중...
-        </div>
-
         <section class="main-visual">
-            <img id="mainImage" src="https://images.pexels.com/photos/1082355/pexels-photo-1082355.jpeg" alt="메인 비주얼">
-            <div class="main-text">
-                <h2 id="mainTitle">프리미엄 커튼으로 특별한 공간을 만듭니다</h2>
-                <p id="mainDescription">고객님의 간에 어울리는 맞형 디자인을 제안해드립니다</p>
+            <div class="main-visual">
+                <img src="https://images.pexels.com/photos/1082355/pexels-photo-1082355.jpeg" alt="메인 비주얼">
+                <div class="main-text">
+                    <h2>프리미엄 커튼으로 특별한 공간을 만듭니다</h2>
+                    <p>고객님의 간에 어울리는 맞형 디자인을 제안해드립니다</p>
+                </div>
             </div>
         </section>
 
         <section id="products" class="products">
             <div class="container">
                 <h3 class="section-title">인기 제품</h3>
-                <div class="product-grid" id="productGrid">
-                    <!-- Firebase에서 동적으로 로드 -->
+                <div class="product-grid">
                     <div class="product-card">
-                        <p style="text-align: center; color: #888;">제품 로딩 중...</p>
+                        <img src="https://images.unsplash.com/photo-1505692952047-1a78307da8f2" alt="프리미엄 린넨커튼">
+                        <h4>프리미엄 린넨커튼</h4>
+                        <p>100% 내추럴 린넨 원단</p>
+                        <button class="product-btn" onclick="location.href='pages/curtains.html'">상세보기</button>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1513519245088-0e12902e35ca" alt="블랙아웃 커튼">
+                        <h4>차광 블랙아웃</h4>
+                        <p>99.9% 빛차단 특수원단</p>
+                        <button class="product-btn" onclick="location.href='pages/curtains.html'">상세보기</button>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457" alt="쉬어커튼">
+                        <h4>쉬어커튼</h4>
+                        <p>은은한 채광 효</p>
+                        <button class="product-btn" onclick="location.href='pages/curtains.html'">상세보기</button>
                     </div>
                 </div>
             </div>
@@ -239,119 +252,6 @@
 
         document.getElementById('modalOverlay').addEventListener('click', closeAdminModal);
 
-        // Firebase에서 메인 이미지 로드
-        async function loadMainImage() {
-            console.log('메인 이미지 로딩...');
-            const img = document.getElementById('mainImage');
-            const debugInfo = document.getElementById('debugInfo');
-            
-            debugInfo.innerHTML = '🔄 Firebase 연결 중...';
-            debugInfo.style.background = '#2196F3';
-            
-            try {
-                const snapshot = await db.collection('main-images').get();
-                console.log('이미지 수:', snapshot.size);
-                
-                debugInfo.innerHTML = `📦 Firebase 응답: ${snapshot.size}개 이미지 발견`;
-                
-                if (!snapshot.empty) {
-                    const image = snapshot.docs[0].data();
-                    console.log('이미지 URL:', image.imageUrl);
-                    
-                    debugInfo.innerHTML = `🔄 이미지 교체 중...<br>${image.imageUrl}`;
-                    
-                    if (img && image.imageUrl) {
-                        const oldSrc = img.src;
-                        img.src = image.imageUrl;
-                        
-                        debugInfo.innerHTML = `✅✅✅ 이미지 교체 완료! ✅✅✅<br>기존: ${oldSrc.substring(0, 50)}...<br>새것: ${image.imageUrl}`;
-                        debugInfo.style.background = '#4CAF50';
-                        debugInfo.style.color = 'white';
-                        
-                        // 10초 동안 표시
-                        setTimeout(() => debugInfo.style.display = 'none', 10000);
-                        console.log('✅ 이미지 변경 완료');
-                    } else {
-                        debugInfo.innerHTML = '❌ 이미지 엘리먼트 또는 URL 없음';
-                        debugInfo.style.background = '#f44336';
-                    }
-                } else {
-                    debugInfo.innerHTML = '⚠️ Firebase에 등록된 이미지 없음';
-                    debugInfo.style.background = '#ff9800';
-                    setTimeout(() => debugInfo.style.display = 'none', 5000);
-                }
-            } catch (error) {
-                console.error('이미지 로드 실패:', error);
-                debugInfo.innerHTML = `❌ 오류: ${error.message}`;
-                debugInfo.style.background = '#f44336';
-                debugInfo.style.color = 'white';
-            }
-        }
-
-        // Firebase에서 텍스트 로드
-        async function loadTexts() {
-            try {
-                const doc = await db.collection('site-settings').doc('texts').get();
-                if (doc.exists) {
-                    const data = doc.data();
-                    if (data.mainTitle) {
-                        document.getElementById('mainTitle').textContent = data.mainTitle;
-                    }
-                    if (data.mainDescription) {
-                        document.getElementById('mainDescription').textContent = data.mainDescription;
-                    }
-                }
-            } catch (error) {
-                console.error('텍스트 로드 실패:', error);
-            }
-        }
-
-        // Firebase에서 제품 로드
-        async function loadProducts() {
-            console.log('제품 로딩...');
-            const productGrid = document.getElementById('productGrid');
-            
-            try {
-                const snapshot = await db.collection('products').limit(6).get();
-                console.log('제품 수:', snapshot.size);
-                
-                if (snapshot.empty) {
-                    productGrid.innerHTML = '<div class="product-card"><p style="text-align: center; color: #888;">등록된 제품이 없습니다</p></div>';
-                    return;
-                }
-                
-                productGrid.innerHTML = '';
-                
-                snapshot.forEach(doc => {
-                    const product = doc.data();
-                    console.log('제품:', product.name);
-                    
-                    const card = document.createElement('div');
-                    card.className = 'product-card';
-                    card.innerHTML = `
-                        <img src="${product.imageUrl || 'https://images.unsplash.com/photo-1505692952047-1a78307da8f2'}" alt="${product.name}">
-                        <h4>${product.name}</h4>
-                        <p>${product.description || (product.category === 'curtain' ? '커튼' : '블라인드')}</p>
-                        <button class="product-btn" onclick="location.href='pages/${product.category === 'curtain' ? 'curtains' : 'blinds'}.html'">상세보기</button>
-                    `;
-                    productGrid.appendChild(card);
-                });
-                
-                console.log('✅ 제품 로딩 완료');
-            } catch (error) {
-                console.error('제품 로드 실패:', error);
-                productGrid.innerHTML = '<div class="product-card"><p style="text-align: center; color: #888;">제품을 불러올 수 없습니다</p></div>';
-            }
-        }
-        
-        // 1초 후 실행 (Firebase 완전히 로드 대기)
-        setTimeout(function() {
-            console.log('=== 데이터 로딩 시작 ===');
-            loadMainImage();
-            loadTexts();
-            loadProducts();
-        }, 1000);
-
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const form = e.target;
@@ -363,13 +263,25 @@
             submitBtn.textContent = '전송 중...';
             
             try {
-                // Firebase에 문의사항 저장
-                await db.collection('inquiries').add({
+                // EmailJS로 이메일 전송
+                await emailjs.send(
+                    'YOUR_SERVICE_ID',      // EmailJS 서비스 ID
+                    'YOUR_TEMPLATE_ID',     // EmailJS 템플릿 ID
+                    {
+                        to_email: 'okyoucandoit@hanmail.net',
+                        from_name: formData.get('name'),
+                        phone: formData.get('phone'),
+                        address: formData.get('address'),
+                        message: formData.get('message')
+                    }
+                );
+                
+                // Firebase에도 저장 (선택사항)
+                await firebase.firestore().collection('inquiries').add({
                     name: formData.get('name'),
                     phone: formData.get('phone'),
                     address: formData.get('address'),
                     message: formData.get('message'),
-                    read: false,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 

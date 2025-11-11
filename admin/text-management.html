@@ -2,97 +2,316 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>텍스트 관리 - 유명커튼블라인드</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전체 텍스트 관리 - 커튼&블라인드스토리</title>
+    <meta name="description" content="유명커튼블라인드 - 프리미엄 커튼과 블라인드 전문점">
     <style>
-        body { font-family: Arial; padding: 20px; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        button { padding: 10px 20px; background: #333; color: white; border: none; cursor: pointer; margin: 5px; }
-        .text-section { background: white; padding: 20px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; }
-        input, textarea { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
-        textarea { min-height: 100px; }
-        .save-btn { background: #4CAF50; }
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .back-btn {
+            padding: 10px 20px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            margin: 0 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .text-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .text-item label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .text-item input,
+        .text-item textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        
+        .text-item textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .save-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .save-btn:hover {
+            background: #45a049;
+        }
+        
+        .success-message {
+            display: none;
+            color: #4CAF50;
+            margin-left: 10px;
+        }
+        
+        .section-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #ddd;
+        }
+        
+        .tab-btn.active {
+            background: #333;
+            color: white;
+        }
+        
+        .search-box {
+            margin-bottom: 20px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .text-group {
+            margin-bottom: 10px;
+        }
+        
+        .text-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .text-location {
+            font-size: 0.8em;
+            color: #666;
+            margin-left: 5px;
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>텍스트 관리</h1>
-        <button onclick="location.href='dashboard.html'">← 대시보드</button>
-    </div>
-
-    <div class="text-section">
-        <h2>메인 제목</h2>
-        <input type="text" id="mainTitle" placeholder="메인 제목">
-        <textarea id="mainDescription" placeholder="메인 설명"></textarea>
-        <button class="save-btn" onclick="saveText('main')">저장</button>
-    </div>
-
-    <div class="text-section">
-        <h2>회사 소개</h2>
-        <textarea id="aboutText" placeholder="회사 소개"></textarea>
-        <button class="save-btn" onclick="saveText('about')">저장</button>
-    </div>
-
-    <div class="text-section">
-        <h2>연락처 정보</h2>
-        <input type="text" id="phone" placeholder="전화번호">
-        <input type="text" id="email" placeholder="이메일">
-        <input type="text" id="address" placeholder="주소">
-        <button class="save-btn" onclick="saveText('contact')">저장</button>
-    </div>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script>
-        // 로그인 체크
-        if(!localStorage.getItem('adminLoggedIn')) {
-            alert('로그인이 필요합니다.');
-            window.location.href = 'login.html';
-        }
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCM8IflmHHgMaFseEoPPsECsLxsSAjj1Vw",
-            authDomain: "curtainweb.firebaseapp.com",
-            projectId: "curtainweb",
-            storageBucket: "curtainweb.firebasestorage.app",
-            messagingSenderId: "1004027071653",
-            appId: "1:1004027071653:web:f29be419700c6302b6114c"
-        };
+    <div class="container">
+        <button onclick="location.href='dashboard.html'" class="back-btn">
+            ← 대시보드로 돌아가기
+        </button>
         
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        async function loadTexts() {
-            const doc = await db.collection('site-settings').doc('texts').get();
-            if (doc.exists) {
-                const data = doc.data();
-                document.getElementById('mainTitle').value = data.mainTitle || '';
-                document.getElementById('mainDescription').value = data.mainDescription || '';
-                document.getElementById('aboutText').value = data.aboutText || '';
-                document.getElementById('phone').value = data.phone || '';
-                document.getElementById('email').value = data.email || '';
-                document.getElementById('address').value = data.address || '';
-            }
-        }
-
-        async function saveText(section) {
-            const data = {};
+        <h1>전체 텍스트 관리</h1>
+        
+        <!-- 탭 메뉴 -->
+        <div class="section-tabs">
+            <button class="tab-btn active" onclick="showSection('contact')">연락처 정보</button>
+            <button class="tab-btn" onclick="showSection('main')">메인 페이지</button>
+            <button class="tab-btn" onclick="showSection('products')">제품 정보</button>
+            <button class="tab-btn" onclick="showSection('footer')">푸터 정보</button>
+        </div>
+        
+        <!-- 검색 기능 -->
+        <div class="search-box">
+            <input type="text" placeholder="수정할 텍스트 검색..." oninput="searchText(this.value)">
+        </div>
+        
+        <!-- 연락처 정보 섹션 -->
+        <div id="contact" class="section-card">
+            <h2 class="section-title">연락처 정보</h2>
             
-            if (section === 'main') {
-                data.mainTitle = document.getElementById('mainTitle').value;
-                data.mainDescription = document.getElementById('mainDescription').value;
-            } else if (section === 'about') {
-                data.aboutText = document.getElementById('aboutText').value;
-            } else if (section === 'contact') {
-                data.phone = document.getElementById('phone').value;
-                data.email = document.getElementById('email').value;
-                data.address = document.getElementById('address').value;
-            }
+            <!-- 플로팅 전화 버튼 -->
+            <div class="text-item">
+                <label>플로팅 전화번호</label>
+                <input type="text" id="floatingPhone" value="02-588-2389">
+                <span class="text-location">위치: 화면 왼쪽 하단 플로팅 버튼</span>
+                <button onclick="saveText(this)" class="save-btn">저장</button>
+                <span class="success-message">저장되었습니다!</span>
+            </div>
             
-            await db.collection('site-settings').doc('texts').set(data, { merge: true });
-            alert('저장되었습니다.');
-        }
+            <!-- 대표 전화번호 -->
+            <div class="text-item">
+                <label>대표 전화번호</label>
+                <input type="text" id="mainPhone" value="02-1234-5678">
+                <span class="text-location">위치: 헤더, 푸터 영역</span>
+                <button onclick="saveText(this)" class="save-btn">저장</button>
+                <span class="success-message">저장되었습니다!</span>
+            </div>
+        </div>
+        
+        <!-- 메인 페이지 섹션 -->
+        <div id="main" class="section-card" style="display: none;">
+            <h2 class="section-title">메인 페이지 텍스트</h2>
+            
+            <!-- 메인 비주얼 -->
+            <div class="text-item">
+                <label>메인 타이틀</label>
+                <input type="text" id="mainTitle" value="프리미엄 커튼으로 특별한 공간을 만듭니다">
+                <label>서브 타이틀</label>
+                <input type="text" id="mainSubtitle" value="고객님의 공간에 어울리는 맞춤형 디자인을 제안해드립니다">
+                <button onclick="saveText(this)" class="save-btn">저장</button>
+                <span class="success-message">저장되었습니다!</span>
+            </div>
+            
+            <!-- 메뉴 텍스트 -->
+            <div class="text-item">
+                <label>메인 메뉴</label>
+                <div class="text-group">
+                    <label>메뉴 1</label>
+                    <input type="text" id="menu1" value="커튼">
+                </div>
+                <div class="text-group">
+                    <label>메뉴 2</label>
+                    <input type="text" id="menu2" value="블라인드">
+                </div>
+                <div class="text-group">
+                    <label>메뉴 3</label>
+                    <input type="text" id="menu3" value="시공사례">
+                </div>
+                <div class="text-group">
+                    <label>메뉴 4</label>
+                    <input type="text" id="menu4" value="상담신청">
+                </div>
+                <button onclick="saveText(this)" class="save-btn">저장</button>
+                <span class="success-message">저장되었습니다!</span>
+            </div>
+        </div>
+        
+        <!-- 제품 정보 섹션 -->
+        <div id="products" class="section-card" style="display: none;">
+            <h2 class="section-title">제품 정보 텍스트</h2>
+            
+            <!-- 커튼 섹션 -->
+            <div class="text-item">
+                <label>커튼 섹션 타이틀</label>
+                <input type="text" id="curtainTitle" value="프리미엄 커튼">
+                <label>커튼 섹션 </label>
+                <textarea id="curtainDesc">고급스러운 소재와 디자인으로 공간의 가치를 높여드립니다.</textarea>
+                <button onclick="saveText(this)" class="save-btn">저장</button>
+                <span class="success-message">저장되었습니다!</span>
+            </div>
+            
+            <!-- 블라인드 섹션 -->
+            <div class="text-item">
+                <label>블라인드 섹션 타이틀</label>
+                <input type="text" id="blindTitle" value="맞춤 블라인드">
+                <label>블라인드 섹션 설명</label>
+                <textarea id="blindDesc">다양한 디자인과 기능성으로 완벽한 빛 조절이 가능합니다.</textarea>
+                <button onclick="saveText(this)" class="save-btn">저장</button>
+                <span class="success-message">저장되었습니다!</span>
+            </div>
+        </div>
+        
+        <!-- 푸터 정보 섹션 -->
+        <div id="footer" class="section-card" style="display: none;">
+            <h2 class="section-title">푸터 정보</h2>
+            
+            <div class="text-item">
+                <label>회사명</label>
+                <input type="text" id="companyName" value="유명커튼블라인드">
+                <label>대표자명</label>
+                <input type="text" id="ceoName" value="홍길동">
+                <label>사업자등록번호</label>
+                <input type="text" id="businessNum" value="123-45-67890">
+                <label>주소</label>
+                <input type="text" id="address" value="서울시 강남구 테헤란로...">
+                <button onclick="saveText(this)" class="save-btn">저장</button>
+                <span class="success-message">저장되었습니다!</span>
+            </div>
+        </div>
+    </div>
 
-        loadTexts();
+    <script>
+        // 탭 전환
+        function showSection(sectionId) {
+            // 모든 섹션 숨기기
+            document.querySelectorAll('.section-card').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // 선택된 섹션 보이기
+            document.getElementById(sectionId).style.display = 'block';
+            
+            // 탭 버튼 활성화 상태 변경
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+        
+        // 텍스트 저장
+        function saveText(btn) {
+            const successMessage = btn.nextElementSibling;
+            successMessage.style.display = 'inline';
+            
+            // 3초 후 메시지 숨기기
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+            
+            // 실제 구현 시에는 서버로 데이터 전송 로직 추가
+            console.log('텍스트가 저장되었습니다.');
+        }
+        
+        // 텍스트 검색
+        function searchText(keyword) {
+            const textItems = document.querySelectorAll('.text-item');
+            
+            textItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                const search = keyword.toLowerCase();
+                
+                if (text.includes(search)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
     </script>
 </body>
-</html>
+</html> 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>관리자 대시보드 - 유명커튼블라인드</title>
+    <title>관리자 대시보드 - 커튼&블라인드스토리</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -66,15 +66,8 @@
     </div>
 
     <script>
-        // 로그인 체크
-        if(!localStorage.getItem('adminLoggedIn')) {
-            alert('로그인이 필요합니다.');
-            window.location.href = 'login.html';
-        }
-
         function logout() {
             if(confirm('로그아웃 하시겠습니까?')) {
-                localStorage.removeItem('adminLoggedIn');
                 window.location.href = '../index.html';
             }
         }
