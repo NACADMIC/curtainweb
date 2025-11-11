@@ -246,35 +246,24 @@
         submitBtn.textContent = '전송 중...';
         
         try {
-            // EmailJS로 이메일 전송
-            await emailjs.send(
-                'YOUR_SERVICE_ID',      // EmailJS 서비스 ID
-                'YOUR_TEMPLATE_ID',     // EmailJS 템플릿 ID
-                {
-                    to_email: 'okyoucandoit@hanmail.net',
-                    from_name: formData.get('name'),
-                    phone: formData.get('phone'),
-                    email: formData.get('email'),
-                    address: formData.get('address'),
-                    message: formData.get('message')
-                }
-            );
-            
-            // Firebase에도 저장 (선택사항)
+            // Firebase에 문의 내용 저장
             await firebase.firestore().collection('inquiries').add({
                 name: formData.get('name'),
                 phone: formData.get('phone'),
-                email: formData.get('email'),
+                email: formData.get('email') || '',
                 address: formData.get('address'),
                 message: formData.get('message'),
+                status: '대기중',
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
             
-            alert('문의가 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.');
+            alert('✅ 문의가 접수되었습니다!\n빠른 시일 내에 연락드리겠습니다.\n\n문의하신 내용은 관리자 페이지에서 확인 가능합니다.');
             form.reset();
+            // 개인정보 동의 체크박스도 초기화
+            document.getElementById('privacyAgree').checked = false;
         } catch (error) {
             console.error('문의 접수 실패:', error);
-            alert('문의 접수에 실패했습니다. 다시 시도해주세요.');
+            alert('❌ 문의 접수에 실패했습니다.\n\n다른 방법으로 문의해주세요:\n📞 전화: 02-588-2389\n💬 채팅: 우측 하단 채팅 버튼');
         } finally {
             // 버튼 활성화
             submitBtn.disabled = false;
