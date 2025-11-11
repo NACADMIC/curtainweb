@@ -200,15 +200,6 @@
 
     <script src="js/main.js"></script>
     <script>
-        let logoClickCount = 0;
-        document.getElementById('adminAccess').addEventListener('click', function() {
-            logoClickCount++;
-            if(logoClickCount === 5) {
-                window.location.href = '/admin/login.html';
-                logoClickCount = 0;
-            }
-        });
-
         function showAdminLogin() {
             document.getElementById('adminModal').style.display = 'block';
             document.getElementById('modalOverlay').style.display = 'block';
