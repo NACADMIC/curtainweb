@@ -330,7 +330,7 @@
         let currentSlidePosition = 0;
         function moveSlide(direction) {
             const slider = document.getElementById('productGrid');
-            const cardWidth = 330; // 카드 너비 + gap
+            const cardWidth = 240; // 카드 너비(220px) + gap(20px)
             currentSlidePosition += direction * cardWidth;
             
             const maxScroll = slider.scrollWidth - slider.clientWidth;
@@ -346,7 +346,7 @@
             });
         }
 
-        // 자동 슬라이드 (5초마다)
+        // 자동 슬라이드 (4초마다)
         let autoSlideInterval;
         function startAutoSlide() {
             autoSlideInterval = setInterval(() => {
@@ -356,14 +356,14 @@
                 if (currentSlidePosition >= maxScroll) {
                     currentSlidePosition = 0;
                 } else {
-                    currentSlidePosition += 330;
+                    currentSlidePosition += 240;
                 }
                 
                 slider.scrollTo({
                     left: currentSlidePosition,
                     behavior: 'smooth'
                 });
-            }, 5000);
+            }, 4000);
         }
 
         function stopAutoSlide() {

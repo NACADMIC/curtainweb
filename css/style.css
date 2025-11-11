@@ -409,7 +409,7 @@ body {
 
 .product-slider {
     display: flex;
-    gap: 30px;
+    gap: 20px;
     overflow-x: auto;
     scroll-behavior: smooth;
     scrollbar-width: none;
@@ -451,8 +451,29 @@ body {
 }
 
 .product-slider .product-card {
-    min-width: 300px;
+    min-width: 220px;
+    max-width: 220px;
     flex-shrink: 0;
+}
+
+.product-slider .product-card img {
+    height: 180px;
+}
+
+.product-slider .product-card h4 {
+    font-size: 1rem;
+    margin: 10px 15px 8px;
+}
+
+.product-slider .product-card p {
+    font-size: 0.85rem;
+    margin: 0 15px 10px;
+}
+
+.product-slider .product-card .product-btn {
+    font-size: 0.85rem;
+    padding: 8px 15px;
+    margin: 10px 15px 15px;
 }
 
 .product-grid {
