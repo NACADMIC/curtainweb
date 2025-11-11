@@ -40,6 +40,12 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script>
+        // 로그인 체크
+        if(!localStorage.getItem('adminLoggedIn')) {
+            alert('로그인이 필요합니다.');
+            window.location.href = 'login.html';
+        }
+
         const firebaseConfig = {
             apiKey: "AIzaSyCM8IflmHHgMaFseEoPPsECsLxsSAjj1Vw",
             authDomain: "curtainweb.firebaseapp.com",
