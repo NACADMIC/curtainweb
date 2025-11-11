@@ -1,3 +1,8 @@
+/* ============================================
+   프리미엄 커튼 웹사이트 스타일
+   고급스러운 디자인 + 완벽한 모바일 최적화
+   ============================================ */
+
 /* 리셋 및 기본 스타일 */
 * {
     margin: 0;
@@ -5,573 +10,208 @@
     box-sizing: border-box;
 }
 
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:wght@400;700&display=swap');
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
 body {
-    font-family: 'Noto Sans KR', sans-serif;
-    line-height: 1.6;
-    color: #333;
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.7;
+    color: #2c2c2c;
+    background: #ffffff;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 30px;
 }
 
-/* 헤더 스타일 */
+/* ============================================
+   헤더 스타일 - 고급스러운 네비게이션
+   ============================================ */
 .header {
     position: fixed;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-    backdrop-filter: blur(10px);
+    top: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
     z-index: 1000;
-    padding: 15px 0;
-}
-
-.nav-menu {
-    display: flex;
-    list-style: none;
-    gap: 40px;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-menu li a {
-    font-size: 17px;
-    font-weight: 700;
-    color: #333;
-    text-decoration: none;
-    position: relative;
-    padding: 5px 0;
+    padding: 18px 0;
     transition: all 0.3s ease;
-}
-
-.nav-menu li a:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: #333;
-    transition: all 0.3s ease;
-}
-
-.nav-menu li a:hover {
-    color: #000;
-}
-
-.nav-menu li a:hover:after {
-    width: 100%;
 }
 
 .header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+}
+
+.header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .logo-text {
-    background: linear-gradient(45deg, #1a1a1a, #4a4a4a);
+    background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 50%, #4a4a4a 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-weight: 900;
+    background-clip: text;
 }
 
-/* 메인 비주얼 슬라이더 */
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 45px;
+}
+
+.nav-menu li a {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2c2c2c;
+    text-decoration: none;
+    position: relative;
+    padding: 8px 4px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.3px;
+}
+
+.nav-menu li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #2c2c2c, #1a1a1a);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-menu li a:hover {
+    color: #1a1a1a;
+}
+
+.nav-menu li a:hover::after,
+.nav-menu li a.active::after {
+    width: 100%;
+}
+
+/* ============================================
+   메인 비주얼 - 프리미엄 느낌
+   ============================================ */
+main {
+    padding-top: 75px;
+}
+
 .main-visual {
     position: relative;
-    height: 100vh;
-    overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.3);
-}
-
-.slider img {
     width: 100%;
-    height: 100vh;
-    object-fit: cover;
+    height: 600px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+    margin-bottom: 80px;
 }
 
-.slide-content {
+.main-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.85);
+    transition: transform 0.6s ease;
+}
+
+.main-visual:hover img {
+    transform: scale(1.02);
+}
+
+.main-text {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     color: white;
-    width: 100%;
-    max-width: 1000px;
-    padding: 0 20px;
-    z-index: 2;
-}
-
-.slide-content h2 {
-    font-size: 3.5rem;
-    font-weight: 700;
-    margin-bottom: 25px;
-    line-height: 1.2;
-    letter-spacing: -1px;
-    text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.2);
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease forwards;
-}
-
-.slide-content p {
-    font-size: 1.4rem;
-    font-weight: 400;
-    margin-bottom: 35px;
-    line-height: 1.6;
-    letter-spacing: -0.5px;
-    text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease 0.3s forwards;
-}
-
-.cta-button {
-    padding: 18px 45px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #333;
-    background: rgba(255, 255, 255, 0.95);
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-shadow: none;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease 0.6s forwards;
-}
-
-.cta-button:hover {
-    background: #fff;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
-
-/* 애니메이션 키프레임 */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* 반응형 스타일 */
-@media (max-width: 768px) {
-    /* 헤더 모바일 최적화 */
-    .header {
-        padding: 10px 0;
-    }
-    
-    .header .container {
-        flex-direction: row;
-        padding: 0 15px;
-    }
-    
-    .header h1 {
-        font-size: 1.2rem;
-    }
-    
-    .logo-text {
-        font-size: 1.2rem;
-        white-space: nowrap;
-    }
-    
-    .nav-menu {
-        flex-direction: row;
-        gap: 15px;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-    }
-    
-    .nav-menu li a {
-        font-size: 0.85rem;
-        padding: 5px 0;
-    }
-    
-    /* 메인 비주얼 */
-    .main-visual {
-        height: 60vh;
-        margin-bottom: 20px;
-    }
-    
-    .main-visual img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block !important;
-    }
-    
-    .main-text {
-        padding: 20px;
-    }
-    
-    .main-text h2 {
-        font-size: 1.5rem;
-    }
-    
-    .main-text p {
-        font-size: 0.9rem;
-    }
-    
-    .slide-content h2 {
-        font-size: 2.5rem;
-    }
-    
-    .slide-content p {
-        font-size: 1.2rem;
-    }
-    
-    .cta-button {
-        padding: 15px 35px;
-        font-size: 1rem;
-    }
-    
-    /* 제품 슬라이더 모바일 */
-    .product-slider-wrapper {
-        padding: 20px 40px;
-    }
-    
-    .slider-btn {
-        width: 35px;
-        height: 35px;
-        font-size: 18px;
-    }
-    
-    .product-slider .product-card {
-        min-width: 180px;
-        max-width: 180px;
-    }
-    
-    .product-slider .product-card img {
-        height: 150px;
-        object-fit: cover;
-    }
-    
-    /* 제품 그리드 모바일 */
-    .product-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-    }
-    
-    /* 메인 비주얼 모바일 */
-    main {
-        padding-top: 60px;
-    }
-    
-    /* 이미지 최적화 */
-    img {
-        max-width: 100%;
-        height: auto;
-    }
-}
-
-/* 더 작은 모바일 (400px 이하) */
-@media (max-width: 400px) {
-    .header h1 {
-        font-size: 1rem;
-    }
-    
-    .logo-text {
-        font-size: 1rem;
-    }
-    
-    .nav-menu {
-        gap: 10px;
-    }
-    
-    .nav-menu li a {
-        font-size: 0.75rem;
-    }
-    
-    /* 메인 이미지 */
-    .main-visual {
-        height: 50vh;
-    }
-    
-    .main-text h2 {
-        font-size: 1.2rem;
-    }
-    
-    .main-text p {
-        font-size: 0.8rem;
-    }
-    
-    .product-slider-wrapper {
-        padding: 20px 30px;
-    }
-    
-    .slider-btn {
-        width: 30px;
-        height: 30px;
-        font-size: 16px;
-    }
-    
-    .product-slider .product-card {
-        min-width: 150px;
-        max-width: 150px;
-    }
-    
-    .product-slider .product-card img {
-        height: 120px;
-    }
-    
-    .product-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-}
-
-/* 제품 카드 스타일 */
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    padding: 40px 0;
-}
-
-.product-card {
-    background: #fff;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
-}
-
-.product-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-}
-
-.product-card img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 8px 8px 0 0;
-}
-
-.product-card:hover img {
-    transform: scale(1.05);
-}
-
-.product-card h4 {
-    font-size: 1.2rem;
-    margin: 15px 20px 10px;
-    font-weight: 500;
-}
-
-.product-card p {
-    color: #666;
-    margin: 0 20px 15px;
-    font-size: 0.95rem;
-}
-
-.product-btn {
-    margin: 0 20px 20px;
-    padding: 10px 25px;
-    background: #333;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.product-btn:hover {
-    background: #555;
-}
-
-/* 상담 폼 스타일 */
-/* 상담신청 섹션 */
-.contact {
-    text-align: center;
-    padding: 60px 0;
-}
-
-.contact h3 {
-    margin-bottom: 40px;
-    font-size: 2rem;
-    color: #333;
-}
-
-.contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    max-width: 600px;
-    margin: 0 auto;
+    z-index: 10;
+    width: 90%;
+    max-width: 800px;
     padding: 40px;
-    background: #f9f9f9;
-    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.contact-form input,
-.contact-form textarea {
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.contact-form button {
-    background: #333;
-    color: #fff;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-/* 링크 스타일 추가 */
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-.header h1 a:hover,
-.nav-menu a:hover {
-    color: #666;
-}
-
-.product-card {
-    cursor: pointer;
-}
-
-/* Google Fonts 추가 */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
-
-/* 기본 스타일 수정 */
-body {
-    font-family: 'Noto Sans KR', sans-serif;
-    line-height: 1.6;
-    color: #333;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-weight: 500;
-    letter-spacing: -0.5px;
-}
-
-.section-title {
-    text-align: center;
-    font-size: 2.2rem;
-    margin-bottom: 50px;
-    position: relative;
-    padding-bottom: 20px;
-}
-
-.section-title:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
-    background: #333;
-}
-
-/* Google Fonts에 더 굵은 폰트 추가 */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
-
-/* 현재 페이지 메뉴 표시 */
-.nav-menu li a.active {
-    color: #000;
+.main-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
     font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 4px 20px rgba(0, 0, 0, 0.4);
+    letter-spacing: -1px;
+    line-height: 1.3;
 }
 
-.nav-menu li a.active:after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: #333;
+.main-text p {
+    font-size: 1.3rem;
+    font-weight: 300;
+    text-shadow: 1px 2px 10px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.5px;
+    line-height: 1.6;
 }
 
-/* 페이지 컨텐츠 여백 수정 */
-.page-content {
-    padding-top: 150px; /* 헤더 높이 + 추가 여백 */
-    min-height: 80vh; /* 최소 높이 설정 */
-}
-
-.page-title {
+/* ============================================
+   섹션 타이틀 - 우아한 디자인
+   ============================================ */
+.section-title {
+    font-family: 'Playfair Display', serif;
     text-align: center;
     font-size: 2.5rem;
-    font-weight: 900;
-    margin-bottom: 50px;
+    font-weight: 700;
+    margin-bottom: 60px;
     color: #1a1a1a;
     position: relative;
-    padding-bottom: 20px;
+    letter-spacing: -0.5px;
 }
 
-/* 페이지 제목 밑줄 효과 */
-.page-title:after {
+.section-title::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -15px;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
+    width: 80px;
     height: 3px;
-    background: #333;
+    background: linear-gradient(90deg, transparent, #2c2c2c, transparent);
 }
 
-/* 서브 페이지 헤더 배경 더 확실하게 */
-.header {
-    position: fixed;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    padding: 15px 0;
+/* ============================================
+   제품 슬라이더 - 고급스러운 스와이프
+   ============================================ */
+.products {
+    padding: 80px 0;
+    background: #fafafa;
 }
 
-/* 기본 스크롤 설정 */
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden; /* 가로 스크롤 방지 */
-}
-
-body {
-    font-family: 'Noto Sans KR', sans-serif;
-    line-height: 1.6;
-    color: #333;
-    overflow-y: auto; /* 세로 스크롤 허용 */
-}
-
-/* 페이지 컨텐츠 여백 및 최소 높이 수정 */
-.page-content {
-    padding-top: 150px;
-    padding-bottom: 100px; /* 하단 여백 추가 */
-    min-height: calc(100vh - 250px); /* 헤더/푸터 고려한 최소 이 */
-}
-
-/* 제품 슬라이더 */
 .product-slider-wrapper {
     position: relative;
-    padding: 20px 60px;
+    padding: 20px 70px;
     overflow: hidden;
 }
 
 .product-slider {
     display: flex;
-    gap: 20px;
+    gap: 30px;
     overflow-x: auto;
     scroll-behavior: smooth;
     scrollbar-width: none;
@@ -587,120 +227,250 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7);
     color: white;
     border: none;
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
-    font-size: 24px;
+    font-size: 26px;
     cursor: pointer;
     z-index: 10;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .slider-btn:hover {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9);
     transform: translateY(-50%) scale(1.1);
 }
 
 .slider-btn.prev {
-    left: 0;
+    left: 5px;
 }
 
 .slider-btn.next {
+    right: 5px;
+}
+
+/* ============================================
+   제품 카드 - 프리미엄 스타일
+   ============================================ */
+.product-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
     right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.02) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.product-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.product-card:hover::before {
+    opacity: 1;
+}
+
+.product-card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.08);
+}
+
+.product-card h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 20px 25px 10px;
+    color: #1a1a1a;
+    letter-spacing: -0.3px;
+}
+
+.product-card p {
+    color: #666;
+    margin: 0 25px 20px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.product-btn {
+    margin: 0 25px 25px;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    letter-spacing: 0.5px;
+}
+
+.product-btn:hover {
+    background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
 .product-slider .product-card {
-    min-width: 220px;
-    max-width: 220px;
+    min-width: 260px;
+    max-width: 260px;
     flex-shrink: 0;
 }
 
 .product-slider .product-card img {
-    height: 180px;
+    height: 200px;
 }
 
 .product-slider .product-card h4 {
-    font-size: 1rem;
-    margin: 10px 15px 8px;
+    font-size: 1.05rem;
+    margin: 15px 20px 8px;
 }
 
 .product-slider .product-card p {
-    font-size: 0.85rem;
-    margin: 0 15px 10px;
+    font-size: 0.88rem;
+    margin: 0 20px 15px;
 }
 
 .product-slider .product-card .product-btn {
     font-size: 0.85rem;
-    padding: 8px 15px;
-    margin: 10px 15px 15px;
+    padding: 10px 20px;
+    margin: 10px 20px 20px;
 }
 
+/* ============================================
+   제품 그리드 (서브 페이지용)
+   ============================================ */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    padding: 20px 0;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    padding: 40px 0 80px;
 }
 
-/* 컨테이너 수정 */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    width: 100%;
-    box-sizing: border-box;
+/* ============================================
+   상담 폼 - 고급스러운 디자인
+   ============================================ */
+.contact {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
 }
 
-/* 스크롤바 디자인 개선 (선택사항) */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-/* 관리자 접근 버튼 스타일 */
-.admin-access {
-    margin-top: 30px;
+.contact h3 {
+    font-family: 'Playfair Display', serif;
     text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 50px;
+    color: #1a1a1a;
+    position: relative;
 }
 
-.admin-btn {
-    background: none;
-    border: none;
-    color: #999;
-    font-size: 12px;
-    cursor: pointer;
-    padding: 5px 10px;
-    transition: all 0.3s ease;
+.contact h3::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #2c2c2c, transparent);
 }
 
-.admin-btn:hover {
-    color: #333;
-}
-
-/* 플로팅 전화 버튼 */
-/* 플로팅 상담 버튼 */
-.floating-buttons {
-    position: fixed;
-    left: 20px;
-    bottom: 20px;
+.contact-form {
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 50px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 20px;
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #e8e8e8;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.3s ease;
+    background: #fafafa;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form select:focus {
+    outline: none;
+    border-color: #2c2c2c;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.contact-form textarea {
+    min-height: 140px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.contact-form button {
+    padding: 18px 40px;
+    background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    letter-spacing: 0.5px;
+}
+
+.contact-form button:hover {
+    background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* ============================================
+   플로팅 버튼 - 세련된 디자인
+   ============================================ */
+.floating-buttons {
+    position: fixed;
+    left: 25px;
+    bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
     z-index: 9999;
 }
 
@@ -708,19 +478,18 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 56px;
-    height: 56px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     text-decoration: none;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transition: all 0.3s ease;
-    font-size: 24px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 26px;
 }
 
 .floating-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-    text-decoration: none;
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .floating-btn.call-btn {
@@ -737,433 +506,519 @@ body {
     background: #FFD900;
 }
 
-.floating-btn i {
-    color: inherit;
+/* ============================================
+   푸터
+   ============================================ */
+footer {
+    background: #1a1a1a;
+    color: #ccc;
+    padding: 50px 0 30px;
+    text-align: center;
+}
+
+footer p {
+    margin: 8px 0;
+    line-height: 1.8;
+    font-size: 0.95rem;
 }
 
 /* ============================================
-   완벽한 반응형 디자인 - 모든 기기 최적화
+   페이지 콘텐츠 (서브 페이지)
    ============================================ */
+.page-content {
+    padding-top: 150px;
+    padding-bottom: 100px;
+    min-height: calc(100vh - 200px);
+}
 
-/* 태블릿 (1024px 이하) */
+.page-title {
+    font-family: 'Playfair Display', serif;
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 60px;
+    color: #1a1a1a;
+    letter-spacing: -1px;
+    position: relative;
+}
+
+.page-title::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #2c2c2c, transparent);
+}
+
+/* ============================================
+   반응형 디자인 - 태블릿 (1024px 이하)
+   ============================================ */
 @media (max-width: 1024px) {
     .container {
-        padding: 0 30px;
+        padding: 0 25px;
     }
-    
+
+    .main-text h2 {
+        font-size: 2.5rem;
+    }
+
     .product-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 25px;
-    }
-    
-    .main-visual {
-        height: 70vh;
+        gap: 30px;
     }
 }
 
-/* 모바일 - 중형 (768px 이하) */
+/* ============================================
+   반응형 디자인 - 모바일 (768px 이하)
+   ============================================ */
 @media (max-width: 768px) {
-    /* 전체 body 여백 */
     body {
         padding-top: 70px;
     }
-    
-    /* 컨테이너 */
+
     .container {
         padding: 0 20px;
     }
-    
-    /* 헤더 */
+
+    /* 헤더 모바일 */
     .header {
-        padding: 12px 0;
+        padding: 15px 0;
     }
-    
+
     .header .container {
-        flex-direction: row;
-        padding: 0 15px;
-        justify-content: space-between;
-        align-items: center;
+        gap: 15px;
     }
-    
+
     .header h1 {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
     }
-    
+
     .logo-text {
-        font-size: 1.2rem;
-        white-space: nowrap;
+        font-size: 1.3rem;
     }
-    
+
     .nav-menu {
-        flex-direction: row;
-        gap: 8px;
+        gap: 12px;
         flex-wrap: wrap;
         justify-content: flex-end;
     }
-    
+
     .nav-menu li a {
         font-size: 0.85rem;
         padding: 6px 8px;
-        white-space: nowrap;
     }
-    
-    /* 메인 비주얼 */
+
+    /* 메인 비주얼 모바일 */
     .main-visual {
-        height: 50vh;
-        min-height: 400px;
-        margin-bottom: 30px;
+        height: 450px;
+        margin-bottom: 50px;
     }
-    
-    .main-visual img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block !important;
-    }
-    
+
     .main-text {
-        padding: 25px 20px;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        padding: 30px 25px;
+        border-radius: 15px;
     }
-    
+
     .main-text h2 {
-        font-size: 1.8rem;
-        line-height: 1.3;
-        margin-bottom: 10px;
-    }
-    
-    .main-text p {
-        font-size: 1rem;
-        line-height: 1.5;
-    }
-    
-    .slide-content h2 {
         font-size: 2rem;
+        margin-bottom: 15px;
     }
-    
-    .slide-content p {
-        font-size: 1.1rem;
+
+    .main-text p {
+        font-size: 1.05rem;
     }
-    
+
     /* 섹션 타이틀 */
     .section-title {
-        font-size: 1.8rem;
-        margin: 30px 0 20px;
+        font-size: 2rem;
+        margin-bottom: 40px;
     }
-    
+
     .page-title {
-        font-size: 1.8rem;
-        margin: 30px 0 20px;
+        font-size: 2.2rem;
+        margin-bottom: 40px;
     }
-    
-    /* 제품 그리드 */
+
+    /* 제품 슬라이더 모바일 */
+    .products {
+        padding: 60px 0;
+    }
+
+    .product-slider-wrapper {
+        padding: 20px 50px;
+    }
+
+    .slider-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 22px;
+    }
+
+    .product-slider .product-card {
+        min-width: 220px;
+        max-width: 220px;
+    }
+
+    .product-slider .product-card img {
+        height: 180px;
+    }
+
+    /* 제품 그리드 모바일 */
     .product-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 20px 0;
+        gap: 25px;
+        padding: 30px 0 60px;
     }
-    
-    .product-card {
-        max-width: 100%;
-    }
-    
+
     .product-card img {
         height: 250px;
     }
-    
-    /* 제품 슬라이더 */
-    .product-slider-wrapper {
-        padding: 20px 45px;
+
+    /* 상담 폼 모바일 */
+    .contact {
+        padding: 60px 0;
     }
-    
+
+    .contact h3 {
+        font-size: 2rem;
+        margin-bottom: 40px;
+    }
+
+    .contact-form {
+        padding: 35px 25px;
+        border-radius: 16px;
+    }
+
+    .contact-form input,
+    .contact-form textarea,
+    .contact-form select {
+        padding: 14px 18px;
+        font-size: 16px;
+    }
+
+    .contact-form button {
+        padding: 16px 35px;
+        font-size: 15px;
+    }
+
+    /* 플로팅 버튼 모바일 */
+    .floating-buttons {
+        left: 20px;
+        bottom: 20px;
+        gap: 12px;
+    }
+
+    .floating-btn {
+        width: 54px;
+        height: 54px;
+        font-size: 24px;
+    }
+
+    /* 페이지 콘텐츠 */
+    .page-content {
+        padding-top: 120px;
+        padding-bottom: 70px;
+    }
+
+    /* 푸터 */
+    footer {
+        padding: 40px 0 25px;
+    }
+
+    footer p {
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+}
+
+/* ============================================
+   반응형 디자인 - 소형 모바일 (480px 이하)
+   ============================================ */
+@media (max-width: 480px) {
+    body {
+        padding-top: 65px;
+    }
+
+    .container {
+        padding: 0 16px;
+    }
+
+    /* 헤더 소형 모바일 */
+    .header {
+        padding: 12px 0;
+    }
+
+    .header h1 {
+        font-size: 1.1rem;
+    }
+
+    .logo-text {
+        font-size: 1.1rem;
+    }
+
+    .nav-menu {
+        gap: 8px;
+    }
+
+    .nav-menu li a {
+        font-size: 0.75rem;
+        padding: 5px 6px;
+    }
+
+    /* 메인 비주얼 소형 모바일 */
+    .main-visual {
+        height: 380px;
+        margin-bottom: 40px;
+    }
+
+    .main-text {
+        padding: 25px 20px;
+        border-radius: 12px;
+    }
+
+    .main-text h2 {
+        font-size: 1.6rem;
+        margin-bottom: 12px;
+    }
+
+    .main-text p {
+        font-size: 0.95rem;
+    }
+
+    /* 섹션 타이틀 */
+    .section-title {
+        font-size: 1.7rem;
+        margin-bottom: 35px;
+    }
+
+    .page-title {
+        font-size: 1.9rem;
+        margin-bottom: 35px;
+    }
+
+    /* 제품 슬라이더 소형 모바일 */
+    .products {
+        padding: 50px 0;
+    }
+
+    .product-slider-wrapper {
+        padding: 20px 40px;
+    }
+
     .slider-btn {
         width: 40px;
         height: 40px;
         font-size: 20px;
     }
-    
+
     .product-slider .product-card {
-        min-width: 200px;
-        max-width: 200px;
+        min-width: 190px;
+        max-width: 190px;
     }
-    
+
     .product-slider .product-card img {
         height: 160px;
     }
-    
-    /* Contact 폼 */
-    .contact-form {
-        padding: 25px 20px;
+
+    .product-slider .product-card h4 {
+        font-size: 0.98rem;
+        margin: 12px 16px 8px;
     }
-    
+
+    .product-slider .product-card p {
+        font-size: 0.82rem;
+        margin: 0 16px 12px;
+    }
+
+    .product-slider .product-card .product-btn {
+        padding: 8px 18px;
+        margin: 8px 16px 16px;
+        font-size: 0.82rem;
+    }
+
+    /* 제품 카드 소형 모바일 */
+    .product-card img {
+        height: 220px;
+    }
+
+    .product-card h4 {
+        font-size: 1.1rem;
+        margin: 16px 20px 8px;
+    }
+
+    .product-card p {
+        font-size: 0.88rem;
+        margin: 0 20px 16px;
+    }
+
+    .product-card .product-btn {
+        margin: 0 20px 20px;
+        padding: 11px 25px;
+    }
+
+    /* 상담 폼 소형 모바일 */
+    .contact {
+        padding: 50px 0;
+    }
+
+    .contact h3 {
+        font-size: 1.7rem;
+        margin-bottom: 35px;
+    }
+
+    .contact-form {
+        padding: 30px 20px;
+        border-radius: 14px;
+    }
+
     .contact-form input,
     .contact-form textarea,
     .contact-form select {
-        font-size: 16px;
-        padding: 12px;
+        padding: 13px 16px;
+        font-size: 15px;
     }
-    
+
+    .contact-form textarea {
+        min-height: 120px;
+    }
+
     .contact-form button {
-        padding: 14px 30px;
-        font-size: 1rem;
+        padding: 15px 30px;
+        font-size: 14px;
     }
-    
-    /* Footer */
-    footer {
-        padding: 30px 0;
-        font-size: 0.9rem;
-    }
-    
-    .company-info p {
-        margin: 8px 0;
-        line-height: 1.6;
-    }
-    
-    /* 플로팅 버튼 */
+
+    /* 플로팅 버튼 소형 모바일 */
     .floating-buttons {
-        left: 15px;
-        bottom: 15px;
+        left: 16px;
+        bottom: 16px;
         gap: 10px;
     }
-    
+
     .floating-btn {
         width: 50px;
         height: 50px;
         font-size: 22px;
     }
-    
-    /* 찾아오시는 길 페이지 */
-    .location-container {
-        margin: 20px auto;
-        padding: 0 15px;
-    }
-    
-    .info-section {
-        padding: 20px;
-        margin-bottom: 20px;
-    }
-    
-    .info-section h3 {
-        font-size: 1.3rem;
-    }
-    
-    .map-container {
-        height: 350px;
-        margin-bottom: 20px;
-    }
-    
-    .directions {
-        padding: 20px;
-    }
-    
-    .directions h3 {
-        font-size: 1.3rem;
-    }
-    
+
     /* 페이지 콘텐츠 */
     .page-content {
         padding-top: 100px;
         padding-bottom: 60px;
     }
-}
 
-/* 모바일 - 소형 (480px 이하) */
-@media (max-width: 480px) {
-    body {
-        padding-top: 65px;
+    /* 푸터 */
+    footer {
+        padding: 35px 0 20px;
     }
-    
-    .container {
-        padding: 0 15px;
-    }
-    
-    /* 헤더 */
-    .header h1 {
-        font-size: 1rem;
-    }
-    
-    .logo-text {
-        font-size: 1rem;
-    }
-    
-    .nav-menu {
-        gap: 5px;
-    }
-    
-    .nav-menu li a {
-        font-size: 0.75rem;
-        padding: 5px 6px;
-    }
-    
-    /* 메인 비주얼 */
-    .main-visual {
-        height: 45vh;
-        min-height: 350px;
-    }
-    
-    .main-text h2 {
-        font-size: 1.4rem;
-    }
-    
-    .main-text p {
-        font-size: 0.9rem;
-    }
-    
-    /* 섹션 타이틀 */
-    .section-title {
-        font-size: 1.5rem;
-    }
-    
-    .page-title {
-        font-size: 1.5rem;
-    }
-    
-    /* 제품 슬라이더 */
-    .product-slider-wrapper {
-        padding: 20px 35px;
-    }
-    
-    .slider-btn {
-        width: 35px;
-        height: 35px;
-        font-size: 18px;
-    }
-    
-    .product-slider .product-card {
-        min-width: 170px;
-        max-width: 170px;
-    }
-    
-    .product-slider .product-card img {
-        height: 140px;
-    }
-    
-    .product-slider .product-card h4 {
-        font-size: 0.95rem;
-    }
-    
-    .product-slider .product-card p {
-        font-size: 0.8rem;
-    }
-    
-    /* Contact 폼 */
-    .contact-form {
-        padding: 20px 15px;
-    }
-    
-    /* Footer */
-    .company-info p {
+
+    footer p {
         font-size: 0.85rem;
-    }
-    
-    /* 버튼 크기 */
-    button, .btn, .product-btn {
-        min-height: 44px;
-        padding: 12px 20px;
-    }
-    
-    /* 개인정보 동의 박스 */
-    .form-group div[style*="padding: 20px"] {
-        padding: 15px !important;
-    }
-    
-    .form-group div[style*="padding: 15px"] div {
-        font-size: 0.85rem !important;
-        padding: 12px !important;
+        line-height: 1.6;
     }
 }
 
-/* 모바일 - 극소형 (360px 이하) */
+/* ============================================
+   반응형 디자인 - 극소형 모바일 (360px 이하)
+   ============================================ */
 @media (max-width: 360px) {
     .header h1 {
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
-    
+
     .logo-text {
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
-    
+
     .nav-menu {
-        gap: 4px;
+        gap: 6px;
     }
-    
+
     .nav-menu li a {
         font-size: 0.7rem;
         padding: 4px 5px;
     }
-    
+
+    .main-visual {
+        height: 340px;
+    }
+
     .main-text h2 {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
     }
-    
+
     .main-text p {
-        font-size: 0.85rem;
+        font-size: 0.88rem;
     }
-    
+
+    .product-slider-wrapper {
+        padding: 20px 35px;
+    }
+
+    .slider-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+
     .product-slider .product-card {
-        min-width: 150px;
-        max-width: 150px;
+        min-width: 170px;
+        max-width: 170px;
     }
-    
+
     .product-slider .product-card img {
-        height: 120px;
+        height: 140px;
     }
-    
-    /* 찾아오시는 길 페이지 */
-    .location-container {
-        padding: 0 10px !important;
+
+    .contact-form {
+        padding: 25px 18px;
     }
-    
-    .info-grid {
-        grid-template-columns: 1fr !important;
-        gap: 10px !important;
-    }
-    
-    .info-item {
-        padding: 10px !important;
-    }
-    
-    .info-item .icon {
-        font-size: 1.2rem !important;
-    }
-    
-    .info-item .text h4 {
-        font-size: 0.9rem !important;
-    }
-    
-    .info-item .text p {
-        font-size: 0.85rem !important;
-    }
-    
-    .map-container {
-        height: 300px !important;
-    }
-    
-    .direction-item h4 {
-        font-size: 1rem !important;
-    }
-    
-    .direction-item p {
-        font-size: 0.85rem !important;
+
+    .floating-btn {
+        width: 46px;
+        height: 46px;
+        font-size: 20px;
     }
 }
 
-/* 모든 페이지의 `<head>` 태그 안에 Font Awesome 아이콘 추가 */
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+/* ============================================
+   유틸리티 클래스
+   ============================================ */
+.text-center {
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
 img {
-    display: block;
     max-width: 100%;
-    height: auto;
+    display: block;
 }
 
-.product-card img,
-.portfolio-item img,
-.slide img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    background-color: #f5f5f5; /* 이미지 로딩 전 배경색 */
+button {
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* ============================================
+   애니메이션
+   ============================================ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease forwards;
 }
