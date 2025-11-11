@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>관리자 로그인 - 커튼&블라인드스토리</title>
+    <title>관리자 로그인 - 유명커튼블라인드</title>
     <style>
         body {
             margin: 0;
@@ -94,7 +94,22 @@
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script>
+        // Firebase 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyCM8IflmHHgMaFseEoPPsECsLxsSAjj1Vw",
+            authDomain: "curtainweb.firebaseapp.com",
+            projectId: "curtainweb",
+            storageBucket: "curtainweb.firebasestorage.app",
+            messagingSenderId: "1004027071653",
+            appId: "1:1004027071653:web:f29be419700c6302b6114c"
+        };
+
+        // Firebase 초기화
+        firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
         document.getElementById('adminLoginForm').addEventListener('submit', async function(e) {
@@ -104,8 +119,10 @@
             
             try {
                 await auth.signInWithEmailAndPassword(id, pw);
+                localStorage.setItem('adminLoggedIn', 'true');
                 window.location.href = 'dashboard.html';
             } catch (error) {
+                console.error('로그인 오류:', error);
                 alert('로그인 실패: ' + error.message);
             }
         });
