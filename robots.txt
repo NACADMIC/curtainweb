@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /secure-admin-xk9p2v/
+Disallow: /secure-admin-xk9p2v/*
+
+# 일반 페이지는 허용
+Allow: /
+Allow: /pages/
+Allow: /css/
+Allow: /js/
+Allow: /index.html
+
+Sitemap: https://nacadmic.github.io/curtainweb/sitemap.xml
