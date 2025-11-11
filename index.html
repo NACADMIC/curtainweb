@@ -151,7 +151,7 @@
 
     <header class="header">
         <div class="container">
-            <h1><a href="index.html" class="logo-text" id="logoLink">유명커튼블라인드</a></h1>
+            <h1><a href="index.html" class="logo-text">유명커튼블라인드</a></h1>
             <nav>
                 <ul class="nav-menu">
                     <li><a href="pages/curtains.html">커튼</a></li>
@@ -441,31 +441,6 @@
             }
         }
 
-        // 관리자 접근을 위한 로고 클릭 카운터
-        let logoClickCount = 0;
-        let logoClickTimer = null;
-        
-        const logoLink = document.getElementById('logoLink');
-        if (logoLink) {
-            logoLink.addEventListener('click', function(e) {
-                logoClickCount++;
-                
-                // 5번 클릭 시 관리자 페이지로 이동
-                if (logoClickCount === 5) {
-                    e.preventDefault();
-                    window.location.href = 'secure-admin-xk9p2v/login.html';
-                    logoClickCount = 0;
-                    return;
-                }
-                
-                // 3초 후 카운터 리셋
-                if (logoClickTimer) clearTimeout(logoClickTimer);
-                logoClickTimer = setTimeout(() => {
-                    logoClickCount = 0;
-                }, 3000);
-            });
-        }
-        
         // 페이지 로드 시 실행
         window.addEventListener('DOMContentLoaded', function() {
             console.log('=== 페이지 로드 완료 ===');
