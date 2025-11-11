@@ -681,42 +681,52 @@ body {
 }
 
 /* 플로팅 전화 버튼 */
-.floating-call {
+/* 플로팅 상담 버튼 */
+.floating-buttons {
     position: fixed;
-    left: 20px;
+    right: 20px;
     bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     z-index: 9999;
 }
 
-.call-button {
+.floating-btn {
     display: flex;
     align-items: center;
-    background: #4CAF50;
-    color: white !important;
-    padding: 12px 20px;
-    border-radius: 30px;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
     text-decoration: none;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     transition: all 0.3s ease;
+    font-size: 24px;
 }
 
-.call-button:hover {
-    background: #45a049;
-    transform: translateY(-2px);
+.floating-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
     text-decoration: none;
+}
+
+.floating-btn.call-btn {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
     color: white !important;
 }
 
-.call-button i {
-    margin-right: 8px;
-    font-size: 20px;
-    color: white !important;
+.floating-btn.kakao-btn {
+    background: #FEE500;
+    color: #3C1E1E !important;
 }
 
-.call-text {
-    font-size: 16px;
-    font-weight: bold;
-    color: white !important;
+.floating-btn.kakao-btn:hover {
+    background: #FFD900;
+}
+
+.floating-btn i {
+    color: inherit;
 }
 
 /* ============================================
@@ -900,17 +910,16 @@ body {
     }
     
     /* 플로팅 버튼 */
-    .floating-call {
+    .floating-buttons {
+        right: 15px;
         bottom: 15px;
-        left: 15px;
+        gap: 10px;
     }
     
-    .call-button {
-        padding: 10px 15px;
-    }
-    
-    .call-text {
-        font-size: 14px;
+    .floating-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
     }
     
     /* 페이지 콘텐츠 */
