@@ -132,11 +132,16 @@
             const formData = new FormData(e.target);
             const imageFile = formData.get('image');
             
+            console.log('제품 저장 시작...');
+            console.log('이미지 파일:', imageFile);
+            
             try {
                 let imageUrl = '';
                 
                 // imgBB로 이미지 업로드
                 if (imageFile && imageFile.size > 0) {
+                    console.log('이미지 업로드 시작...');
+                    
                     if (IMGBB_API_KEY === 'YOUR_IMGBB_API_KEY') {
                         alert('imgBB API 키를 설정해주세요. (FIREBASE_설정가이드.md 참고)');
                         return;
@@ -151,11 +156,16 @@
                     });
                     
                     const result = await response.json();
+                    console.log('imgBB 응답:', result);
+                    
                     if (result.success) {
                         imageUrl = result.data.url;
+                        console.log('이미지 URL:', imageUrl);
                     } else {
-                        throw new Error('이미지 업로드 실패');
+                        throw new Error('이미지 업로드 실패: ' + JSON.stringify(result));
                     }
+                } else {
+                    console.log('이미지 없음, 기본 이미지 사용');
                 }
                 
                 const productData = {
@@ -166,19 +176,26 @@
                     imageUrl: imageUrl
                 };
                 
+                console.log('제품 데이터:', productData);
+                
                 if (currentEditId) {
                     // 수정
+                    console.log('제품 수정 시작...');
                     productData.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
                     await db.collection('products').doc(currentEditId).update(productData);
+                    console.log('제품 수정 완료!');
                     alert('제품이 수정되었습니다.');
                 } else {
                     // 추가
+                    console.log('제품 추가 시작...');
                     productData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                    await db.collection('products').add(productData);
+                    const docRef = await db.collection('products').add(productData);
+                    console.log('제품 추가 완료! ID:', docRef.id);
                     alert('제품이 등록되었습니다.');
                 }
                 
                 closeModal();
+                console.log('제품 목록 새로고침...');
                 loadProducts();
             } catch (error) {
                 console.error('제품 저장 실패:', error);
