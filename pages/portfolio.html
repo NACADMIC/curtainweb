@@ -420,7 +420,18 @@
         
         // 이미지 표시 함수
         function showImage(index) {
+            if (!currentPortfolio) {
+                console.error('❌ currentPortfolio is null');
+                return;
+            }
+            
             const images = currentPortfolio.images || [currentPortfolio.imageUrl];
+            console.log('📸 showImage 호출:', {
+                index: index,
+                totalImages: images.length,
+                images: images
+            });
+            
             const modalImg = document.getElementById('expandedImage');
             const imageCounter = document.getElementById('imageCounter');
             
@@ -435,15 +446,41 @@
         
         // 이전 이미지
         function prevImage() {
+            if (!currentPortfolio) {
+                console.error('❌ prevImage: currentPortfolio is null');
+                return;
+            }
+            
             const images = currentPortfolio.images || [currentPortfolio.imageUrl];
+            const oldIndex = currentImageIndex;
             currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            
+            console.log('⬅️ 이전 이미지:', {
+                from: oldIndex,
+                to: currentImageIndex,
+                totalImages: images.length
+            });
+            
             showImage(currentImageIndex);
         }
         
         // 다음 이미지
         function nextImage() {
+            if (!currentPortfolio) {
+                console.error('❌ nextImage: currentPortfolio is null');
+                return;
+            }
+            
             const images = currentPortfolio.images || [currentPortfolio.imageUrl];
+            const oldIndex = currentImageIndex;
             currentImageIndex = (currentImageIndex + 1) % images.length;
+            
+            console.log('➡️ 다음 이미지:', {
+                from: oldIndex,
+                to: currentImageIndex,
+                totalImages: images.length
+            });
+            
             showImage(currentImageIndex);
         }
         
