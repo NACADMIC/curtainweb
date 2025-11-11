@@ -111,7 +111,7 @@
 
     <main>
         <!-- 디버그 정보 (테스트용) -->
-        <div id="debugInfo" style="background: #ffeb3b; padding: 10px; text-align: center; font-weight: bold;">
+        <div id="debugInfo" style="background: #ffeb3b; padding: 20px; text-align: center; font-weight: bold; font-size: 18px; border: 3px solid red;">
             메인 이미지 로딩 중...
         </div>
 
@@ -245,29 +245,46 @@
             const img = document.getElementById('mainImage');
             const debugInfo = document.getElementById('debugInfo');
             
+            debugInfo.innerHTML = '🔄 Firebase 연결 중...';
+            debugInfo.style.background = '#2196F3';
+            
             try {
                 const snapshot = await db.collection('main-images').get();
                 console.log('이미지 수:', snapshot.size);
+                
+                debugInfo.innerHTML = `📦 Firebase 응답: ${snapshot.size}개 이미지 발견`;
                 
                 if (!snapshot.empty) {
                     const image = snapshot.docs[0].data();
                     console.log('이미지 URL:', image.imageUrl);
                     
+                    debugInfo.innerHTML = `🔄 이미지 교체 중...<br>${image.imageUrl}`;
+                    
                     if (img && image.imageUrl) {
+                        const oldSrc = img.src;
                         img.src = image.imageUrl;
-                        debugInfo.innerHTML = '✅ 사용자 이미지 로드됨';
+                        
+                        debugInfo.innerHTML = `✅✅✅ 이미지 교체 완료! ✅✅✅<br>기존: ${oldSrc.substring(0, 50)}...<br>새것: ${image.imageUrl}`;
                         debugInfo.style.background = '#4CAF50';
                         debugInfo.style.color = 'white';
-                        setTimeout(() => debugInfo.style.display = 'none', 3000);
+                        
+                        // 10초 동안 표시
+                        setTimeout(() => debugInfo.style.display = 'none', 10000);
                         console.log('✅ 이미지 변경 완료');
+                    } else {
+                        debugInfo.innerHTML = '❌ 이미지 엘리먼트 또는 URL 없음';
+                        debugInfo.style.background = '#f44336';
                     }
                 } else {
-                    console.log('Firebase에 이미지 없음');
-                    debugInfo.style.display = 'none';
+                    debugInfo.innerHTML = '⚠️ Firebase에 등록된 이미지 없음';
+                    debugInfo.style.background = '#ff9800';
+                    setTimeout(() => debugInfo.style.display = 'none', 5000);
                 }
             } catch (error) {
                 console.error('이미지 로드 실패:', error);
-                debugInfo.style.display = 'none';
+                debugInfo.innerHTML = `❌ 오류: ${error.message}`;
+                debugInfo.style.background = '#f44336';
+                debugInfo.style.color = 'white';
             }
         }
 
